@@ -63,8 +63,8 @@
     "errorLens.gutterForeground": "#ffffff",
 
     // Configuración de Headwind
-    "headwind.sortOnSave": true,
-    "headwind.removeUnused": true,
+    /*   "headwind.sortOnSave": true,
+    "headwind.removeUnused": true, */
 
     // Configuración de PHP Code Sniffer
     "phpcs.enable": true,
