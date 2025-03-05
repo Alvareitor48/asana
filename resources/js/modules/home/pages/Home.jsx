@@ -1,4 +1,4 @@
-import { Head } from "@inertiajs/react";
+import { Head } from '@inertiajs/react';
 
 export default function Home({ auth }) {
     return (
@@ -6,6 +6,5 @@ export default function Home({ auth }) {
             <Head title="Home" />
             <div>Home</div>
         </>
-    
-    )
+    );
 }
