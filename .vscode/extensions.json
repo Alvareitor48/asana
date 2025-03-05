@@ -1,0 +1,17 @@
+{
+
+    
+        "recommendations": [
+          "streetsidesoftware.code-spell-checker",
+          "usernamehw.errorlens",
+          "dbaeumer.vscode-eslint",
+          "headwind.headwind",
+          "onecentlin.laravel-blade",
+          "bmewburn.vscode-intelephense-client",
+          "bmewburn.vscode-php-name-resolver",
+          "slevomat.slevomat-coding-standard",
+          "esbenp.prettier-vscode"
+        ]
+      
+      
+}

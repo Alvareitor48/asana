@@ -1,0 +1,78 @@
+{
+    // Formateo y organización de código
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "always"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true,
+
+    // Asociación de archivos con lenguajes específicos
+    "files.associations": {
+        "*.blade.php": "html",
+        "*.vue": "vue",
+        "*.tsx": "typescriptreact",
+        "*.ts": "typescript",
+        "*.jsx": "javascriptreact",
+        "*.js": "javascript",
+        "*.json": "json",
+        "*.css": "css",
+        "*.scss": "scss",
+        "*.svg": "html"
+    },
+
+    // Validación y formateo con ESLint
+    "eslint.validate": ["javascript", "javascriptreact"],
+    "eslint.format.enable": true,
+
+    // Configuración específica para PHP
+    "[php]": {
+        "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+
+    // Configuración de Prettier para seleccionar archivos
+    "prettier.documentSelectors": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.php"],
+
+    // Configuración de espaciado y detección de indentación
+    "editor.insertSpaces": false,
+    "editor.detectIndentation": false,
+
+    // Desactivación de sugerencias básicas de PHP
+    "php.suggest.basic": false,
+
+    // Configuración de PHP Intelephense
+    "intelephense.environment.phpVersion": "8.2.0", // Ajusta según tu versión de PHP
+    "intelephense.files.associations": ["**/*.php", "**/*.blade.php"],
+
+    // Configuración de Code Spell Checker para español e inglés
+    "cSpell.language": "en,es",
+
+    // Configuración de ErrorLens
+    "errorLens.enabled": true,
+    "errorLens.gutterBackground": "#ff0000",
+    "errorLens.gutterForeground": "#ffffff",
+
+    // Configuración de Headwind
+    "headwind.sortOnSave": true,
+    "headwind.removeUnused": true,
+
+    // Configuración de PHP Code Sniffer
+    "phpcs.enable": true,
+    "phpcs.standard": "PSR12", // O el estándar que prefieras
+    "phpcs.executablePath": "vendor/bin/phpcs", // Ajusta según la ubicación de tu ejecutable
+    "phpcs.autoDetect": true,
+
+    // Configuración de Laravel
+    "laravel-docs.enabled": true,
+    "laravel-artisan.enabled": true
+}
