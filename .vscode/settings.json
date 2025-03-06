@@ -74,5 +74,5 @@
 
     // Configuración de Laravel
     "laravel-docs.enabled": true,
-    "laravel-artisan.enabled": true
+	"laravel-artisan.enabled": true,
 }

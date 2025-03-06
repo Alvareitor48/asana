@@ -1,66 +1,117 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Guía de Instalación y Configuración de Proyecto Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este documento proporciona los pasos necesarios para clonar e instalar un proyecto Laravel 11 en tu entorno local.
 
-## About Laravel
+## Requisitos Previos
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu sistema:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **PHP 8.1 o superior**: Requerido por Laravel 11.
+- **Composer 2.5+**: Herramienta para la gestión de dependencias en PHP.
+- **Node.js 18+ y NPM 9+**: Necesarios para la gestión de dependencias de JavaScript y la compilación de assets con Vite.
+- **Base de Datos**: SQLite (configuración por defecto), MySQL, PostgreSQL o SQL Server.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Pasos para la Instalación
 
-## Learning Laravel
+### 1. Clonar el Repositorio
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```bash
+git clone https://github.com/usuario/nombre-del-proyecto.git
+cd nombre-del-proyecto
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 2. Instala las dependencias de PHP utilizando Composer:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+composer install
+```
 
-## Laravel Sponsors
+### 3. Instalar Dependencias de JavaScript
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Instala las dependencias de JavaScript utilizando NPM:
 
-### Premium Partners
+```bash
+npm install
+npm run prepare
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 4. Configurar el Archivo .env
 
-## Contributing
+Copia el archivo de ejemplo .env.example y renómbralo a .env:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+cp .env.example .env
+```
 
-## Code of Conduct
+Abre el archivo .env en un editor de texto y configura las variables de entorno, especialmente las relacionadas con la base de datos:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```ini
+DB_CONNECTION=sqlite
+DB_DATABASE=/var/www/nombre-del-proyecto/database/database.sqlite
+```
 
-## Security Vulnerabilities
+Asegúrate de que la ruta en DB_DATABASE corresponda a la ubicación de tu archivo SQLite.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 5. Generar la Clave de Aplicación
 
-## License
+Ejecuta el siguiente comando para generar una clave única:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan key:generate
+```
+
+### 6. Crear la Base de Datos SQLite
+
+Si usas SQLite, crea el archivo de base de datos:
+
+```bash
+touch /var/www/nombre-del-proyecto/database/database.sqlite
+```
+
+Importante: Verifica los permisos del archivo para que Laravel pueda acceder a él.
+
+### 7. Ejecutar Migraciones y Seeders
+
+Aplica las migraciones para crear tablas:
+
+```bash
+php artisan migrate
+```
+
+Si el proyecto incluye datos iniciales, ejecuta:
+
+```bash
+php artisan db:seed
+```
+
+### 8. Compilar los Assets
+
+Para desarrollo, compila los archivos con:
+
+```bash
+npm run dev
+```
+
+Para producción, usa:
+
+```bash
+npm run production
+```
+
+### 9. Crear Enlace Simbólico para Almacenamiento
+
+Si el proyecto usa almacenamiento de archivos, ejecuta:
+
+```bash
+php artisan storage:link
+```
+
+### 10. Acceder al Proyecto
+
+Inicia el servidor de desarrollo:
+
+```bash
+npm run dev
+```
+
+> **Listo!** 🚀 Ahora puedes acceder a la URL en tu navegador.
