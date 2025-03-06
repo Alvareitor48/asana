@@ -12,7 +12,7 @@ export default function AuthLayout({ children }) {
   return (
     <>
       <div className="flex min-h-screen w-full flex-col overflow-x-hidden bg-custom-gradient bg-cover bg-center bg-no-repeat">
-        <Header isNavbarOpen={isNavBarOpen} setIsNavbarOpen={setIsNavBarOpen} />
+        <Header isNavbarOpen={isNavBarOpen} toggleNavbar={() => setIsNavBarOpen(!isNavBarOpen)} />
         <AnimatePresence initial={false}>
           <NavBar isOpen={isNavBarOpen}>
             <div className="flex h-fit w-full flex-col items-center justify-center gap-4 px-1 py-5">
@@ -33,8 +33,8 @@ export default function AuthLayout({ children }) {
           <motion.main
             className={`flex mt-20 min-h-full w-full text-white`}
             animate={{
-              marginLeft: isNavBarOpen ? '15rem' : '5rem', // ml-60 → 15rem, ml-20 → 5rem
-              paddingRight: isNavBarOpen ? '15rem' : '5rem', // pr-60 → 15rem, pr-20 → 5rem
+              marginLeft: isNavBarOpen ? '15rem' : '5rem',
+              paddingRight: isNavBarOpen ? '15rem' : '5rem',
             }}
             transition={{ type: 'spring', stiffness: 200, damping: 20 }}
           >
