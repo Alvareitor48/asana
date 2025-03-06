@@ -1,17 +1,21 @@
 {
-    "semi": true,
+    "printWidth": 100,
+    "semi": false,
     "singleQuote": true,
-    "singleAttributePerLine": false,
-    "htmlWhitespaceSensitivity": "css",
-    "printWidth": 150,
-    "plugins": ["prettier-plugin-organize-imports", "prettier-plugin-tailwindcss"],
-    "tailwindFunctions": ["clsx", "cn"],
-    "tabWidth": 4,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "useTabs": false,
     "overrides": [
         {
-            "files": "**/*.yml",
+            "files": [".*", "*.json", "*.md", "*.toml", "*.yml"],
             "options": {
-                "tabWidth": 2
+                "useTabs": false
+            }
+        },
+        {
+            "files": ["*.md", "*.mdx"],
+            "options": {
+                "printWidth": 80
             }
         }
     ]
