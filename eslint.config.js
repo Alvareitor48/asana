@@ -1,43 +1,50 @@
-import js from '@eslint/js';
-import prettier from 'eslint-config-prettier';
-import react from 'eslint-plugin-react';
-import reactHooks from 'eslint-plugin-react-hooks';
-import globals from 'globals';
+import js from '@eslint/js'
+import prettier from 'eslint-config-prettier'
+import react from 'eslint-plugin-react'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import globals from 'globals'
 
-/** @type {import('eslint').Linter.Config[]} */
 export default [
-    js.configs.recommended,
-    {
-        plugins: {
-            react: react,
-            'react-hooks': reactHooks,
+  js.configs.recommended,
+  {
+    files: ['**/*.{js,jsx}'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
         },
-        ...react.configs.recommended,
-        ...react.configs['jsx-runtime'], // Requerido para React 17+
-        languageOptions: {
-            globals: {
-                ...globals.browser,
-            },
-        },
-        rules: {
-            'react/react-in-jsx-scope': 'off',
-            'react/prop-types': 'off',
-            'react/no-unescaped-entities': 'off',
-        },
-        settings: {
-            react: {
-                version: 'detect',
-            },
-        },
+      },
     },
-    {
-        rules: {
-            'react-hooks/rules-of-hooks': 'error',
-            'react-hooks/exhaustive-deps': 'warn',
-        },
+    plugins: {
+      react: react,
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
     },
-    {
-        ignores: ['vendor', 'node_modules', 'public', 'bootstrap/ssr', 'tailwind.config.js'],
+    rules: {
+      ...react.configs.recommended.rules,
+      ...reactHooks.configs.recommended.rules,
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
+      'react/no-unescaped-entities': 'off',
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+      'no-unused-vars': 'warn',
+      'no-console': 'warn',
     },
-    prettier, // Desactiva todas las reglas que podrían interferir con Prettier
-];
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
+  },
+  {
+    ignores: ['vendor/**', 'node_modules/**', 'public/**', 'bootstrap/ssr/**', '*.config.js'],
+  },
+  prettier,
+]

@@ -1,3 +1,29 @@
-resources/js/components/ui/*
-node_modules/
+# =============================================
+# Ignorar formatos para:
+# - Archivos generados automáticamente
+# - Configuraciones sensibles
+# - Dependencias
+# - Builds/compilaciones
+# =============================================
+
+# Directorios
 dist/
+build/
+node_modules/
+coverage/
+.next/
+out/
+.vscode/
+.idea/
+__snapshots__/
+
+# Archivos
+.env*
+*.d.ts
+*.log
+*.snap
+*.min.*
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+.DS_Store
