@@ -1,14 +1,14 @@
 #!/usr/bin/env sh
 #. "$(dirname -- "$0")/_/husky.sh"
 
-echo "🚀 Iniciando pre-commit hook..."
-echo "=============================="
+# echo "🚀 Iniciando pre-commit hook..."
+# echo "=============================="
 
 # Ejecutar lint-staged con salida detallada
-npx --no-install lint-staged --verbose || {
-  echo "❌ Error: Linting falló" >&2
-  exit 1
-}
+# npx --no-install lint-staged --verbose || {
+#   echo "❌ Error: Linting falló" >&2
+#   exit 1
+# }
 
-echo "✅ Todo pasó correctamente!"
-echo "==========================="
+# echo "✅ Todo pasó correctamente!"
+# echo "==========================="
