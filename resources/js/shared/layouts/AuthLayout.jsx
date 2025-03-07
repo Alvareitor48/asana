@@ -38,7 +38,7 @@ export default function AuthLayout({ children }) {
             }}
             transition={{ type: 'spring', stiffness: 200, damping: 20 }}
           >
-            <section id="main-content" className="h-full w-full bg-transparent">
+            <section id="main-content" className="h-screen w-full bg-transparent p-3">
               {children}
             </section>
           </motion.main>
