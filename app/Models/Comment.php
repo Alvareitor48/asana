@@ -12,7 +12,6 @@ class Comment extends Model
 
 	protected $fillable = [
 		'content',
-		'created_at'
 	];
 
 
@@ -27,6 +26,4 @@ class Comment extends Model
 	{
 		return $this->belongsToMany(User::class);
 	}
-
-
 }

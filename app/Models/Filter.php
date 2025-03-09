@@ -13,7 +13,6 @@ class Filter extends Model
 
 	protected $fillable = [
 		'type',
-		'created_at'
 	];
 
 	/* filtros de un proyecto */
