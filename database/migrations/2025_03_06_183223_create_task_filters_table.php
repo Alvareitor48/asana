@@ -12,7 +12,6 @@ return new class extends Migration
 	public function up(): void
 	{
 		Schema::create('task_filters', function (Blueprint $table) {
-			$table->id();
 			$table->foreignId('task_id')->references('id')->on('tasks')->onDelete('cascade');
 			$table->foreignId('filter_id')->references('id')->on('filters')->onDelete('cascade');
 			$table->text('value');
