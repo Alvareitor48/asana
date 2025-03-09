@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -15,11 +13,22 @@ return new class extends Migration
 		DB::unprepared('
             CREATE OR REPLACE FUNCTION create_project_after_user_insert()
             RETURNS TRIGGER AS $$
+            DECLARE
+                new_project_id INT; -- Usar INT para el ID del proyecto
             BEGIN
-                -- Crear un nuevo proyecto con ID autoincremental
+                -- Crear un nuevo proyecto y obtener su ID
                 INSERT INTO projects (name, description, created_at)
-                VALUES (CONCAT(\'My Tasks \', NEW.name), CONCAT(\'Personal tasks for user \', NEW.name), NOW());
-                
+                VALUES (
+                    CONCAT(\'My Tasks \', NEW.name),
+                    CONCAT(\'Personal tasks for user \', NEW.name),
+                    NOW()
+                )
+                RETURNING id INTO new_project_id; -- Capturar el ID generado
+
+                -- Insertar al usuario en project_members con el rol de "owner"
+                INSERT INTO project_members (project_id, user_id, role)
+                VALUES (new_project_id, NEW.id, \'owner\');
+
                 RETURN NEW;
             END;
             $$ LANGUAGE plpgsql;
@@ -32,7 +41,6 @@ return new class extends Migration
             EXECUTE FUNCTION create_project_after_user_insert();
         ');
 	}
-
 
 	/**
 	 * Reverse the migrations.
