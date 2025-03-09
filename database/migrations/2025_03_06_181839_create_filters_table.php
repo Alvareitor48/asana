@@ -13,8 +13,8 @@ return new class extends Migration
 	{
 		Schema::create('filters', function (Blueprint $table) {
 			$table->id();
-			$table->foreignId('filter_id')->references('id')->on('filters')->onDelete('cascade');
-			$table->text('value');
+			$table->foreignId('project_id')->references('id')->on('projects')->onDelete('cascade');
+			$table->string('type');
 			$table->timestamps();
 		});
 	}
