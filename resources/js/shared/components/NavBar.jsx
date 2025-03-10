@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 
 const NavBar = ({ isOpen, children, widthOpen = 240, widthClosed = 75, className = '' }) => {
   return (
