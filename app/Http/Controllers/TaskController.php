@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\IndexProjectsResource;
+use App\Http\Resources\ResponsibleResource;
 use App\Models\Project;
+use App\Models\Section;
 use App\Models\Task;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -13,9 +17,16 @@ class TaskController extends Controller
 		// Mostrar detalles de una tarea
 	}
 
-	public function store(Request $request, Project $project)
+	public function store(Request $request, Project $project, Section $section): RedirectResponse
 	{
-		// Crear una nueva tarea en un proyecto
+		$validated = $request->validate([
+			'title' => 'required|string|max:255',
+		]);
+		Task::create([
+			'title' => $request->title,
+			'section_id' => $section->id,
+		]);
+		return redirect(route('project.show', $project));
 	}
 
 	public function edit(Project $project, Task $task)
@@ -28,14 +39,21 @@ class TaskController extends Controller
 		// Actualizar una tarea
 	}
 
-	public function responsibles(Project $project, Task $task)
+	public function responsibles(Project $project, Task $task): RedirectResponse
 	{
-		// Mostrar responsables disponibles para asignar a la tarea
+		return redirect()->route('tasks.show', ['project' => $project, 'task' => $task])->with('responsibles', ResponsibleResource::collection(
+			ResponsibleResource::collection($project->users)->toArray(request())
+		));
 	}
 
-	public function projects(Project $project, Task $task)
+	public function projects(Project $project, Task $task): RedirectResponse
 	{
-		// Mostrar proyectos disponibles para mover la tarea
+		$projects = IndexProjectsResource::collection(
+			Project::whereHas('users', function ($query) {
+				$query->where('user_id', auth()->id());
+			})->get()
+		)->toArray(request());
+		return redirect()->route('tasks.show', ['project' => $project, 'task' => $task])->with('projects', $projects);
 	}
 
 	public function destroy(Project $project, Task $task)

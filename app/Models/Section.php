@@ -12,7 +12,8 @@ class Section extends Model
 	use HasFactory;
 
 	protected $fillable = [
-		'name'
+		'name',
+		'project_id'
 	];
 
 

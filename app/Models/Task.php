@@ -18,6 +18,7 @@ class Task extends Model
 		'status',
 		'due_date',
 		'attachment',
+		'section_id',
 	];
 
 
