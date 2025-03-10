@@ -14,7 +14,6 @@ class Project extends Model
 	protected $fillable = [
 		'name',
 		'description',
-		'created_at'
 	];
 
 	/* coloaboradores de un proyecto */
