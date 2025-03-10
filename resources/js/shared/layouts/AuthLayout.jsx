@@ -4,7 +4,7 @@ import NavBar from '@/shared/components/NavBar'
 import House from '@/shared/icons/House'
 import Notify from '@/shared/icons/Notify'
 import Pen from '@/shared/icons/Pen'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
 
 export default function AuthLayout({ children }) {
