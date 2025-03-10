@@ -1,7 +1,7 @@
-import InputError from '@/Components/InputError'
-import InputLabel from '@/Components/InputLabel'
-import TextInput from '@/Components/TextInput'
 import GuestLayout from '@/Layouts/GuestLayout'
+import InputError from '@/modules/auth/components/InputError'
+import InputLabel from '@/modules/auth/components/InputLabel'
+import TextInput from '@/modules/auth/components/TextInput'
 import { Head, Link, useForm } from '@inertiajs/react'
 
 export default function Register() {
