@@ -30,10 +30,9 @@ class Task extends Model
 	}
 
 	/* tareas para una seccion del proyecto */
-	public function sections(): BelongsToMany
+	public function section(): BelongsTo
 	{
-		return $this->belongsToMany(Project::class, 'sections')
-			->withPivot(['id', 'name']);
+		return $this->belongsTo(Section::class);
 	}
 
 
