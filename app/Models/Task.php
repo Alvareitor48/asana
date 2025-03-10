@@ -37,13 +37,6 @@ class Task extends Model
 	}
 
 
-	/*  cada tarea que pertenece a un proyecto */
-	public function projects(): BelongsTo
-	{
-		return $this->belongsTo(Project::class);
-	}
-
-
 	/* collaboradores de la tarea */
 	public function users(): BelongsToMany
 	{

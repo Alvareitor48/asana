@@ -15,7 +15,6 @@ return new class extends Migration
 			$table->id();
 			$table->string('title');
 			$table->text('description')->nullable();
-			$table->foreignId('project_id')->references('id')->on('projects')->onDelete('cascade');
 			$table->foreignId('assigned_to')->references('id')->on('users')->onDelete('cascade');
 			$table->foreignId('section_id')->references('id')->on('sections')->onDelete('cascade');
 			$table->jsonb('attachment')->nullable();
