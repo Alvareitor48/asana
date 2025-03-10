@@ -10,7 +10,14 @@ class SectionController extends Controller
 {
 	public function store(Request $request, Project $project)
 	{
-		// Crear una nueva sección en un proyecto
+		$validated = $request->validate([
+			'title' => 'required|string|max:255',
+		]);
+		Section::create([
+			'name' => $validated['title'],
+			'project_id' => $project->id,
+		]);
+		return redirect(route('project.show', $project));
 	}
 
 	public function update(Request $request, Project $project, Section $section)

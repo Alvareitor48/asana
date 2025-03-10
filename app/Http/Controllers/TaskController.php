@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\Section;
 use App\Models\Task;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -13,9 +15,16 @@ class TaskController extends Controller
 		// Mostrar detalles de una tarea
 	}
 
-	public function store(Request $request, Project $project)
+	public function store(Request $request, Project $project, Section $section): RedirectResponse
 	{
-		// Crear una nueva tarea en un proyecto
+		$validated = $request->validate([
+			'title' => 'required|string|max:255',
+		]);
+		Task::create([
+			'title' => $request->title,
+			'section_id' => $section->id,
+		]);
+		return redirect(route('project.show', $project));
 	}
 
 	public function edit(Project $project, Task $task)
