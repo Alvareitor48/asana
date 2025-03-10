@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\IndexProjectsResource;
 use App\Models\Project;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ProjectController extends Controller
 {
 	public function index()
 	{
-		// Listar todos los proyectos
+		return Inertia::render('projects/pages/ProjectsIndex', IndexProjectsResource::collection(
+			Project::whereHas('users', function ($query) {
+				$query->where('user_id', auth()->id());
+			})->get()
+		)->toArray(request()));
 	}
 
 	public function show(Project $project)

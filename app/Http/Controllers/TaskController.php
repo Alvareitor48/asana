@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\IndexProjectsResource;
+use App\Http\Resources\ResponsibleResource;
 use App\Models\Project;
 use App\Models\Section;
 use App\Models\Task;
@@ -37,14 +39,21 @@ class TaskController extends Controller
 		// Actualizar una tarea
 	}
 
-	public function responsibles(Project $project, Task $task)
+	public function responsibles(Project $project, Task $task): RedirectResponse
 	{
-		// Mostrar responsables disponibles para asignar a la tarea
+		return redirect()->route('tasks.show', ['project' => $project, 'task' => $task])->with('responsibles', ResponsibleResource::collection(
+			ResponsibleResource::collection($project->users)->toArray(request())
+		));
 	}
 
-	public function projects(Project $project, Task $task)
+	public function projects(Project $project, Task $task): RedirectResponse
 	{
-		// Mostrar proyectos disponibles para mover la tarea
+		$projects = IndexProjectsResource::collection(
+			Project::whereHas('users', function ($query) {
+				$query->where('user_id', auth()->id());
+			})->get()
+		)->toArray(request());
+		return redirect()->route('tasks.show', ['project' => $project, 'task' => $task])->with('projects', $projects);
 	}
 
 	public function destroy(Project $project, Task $task)
