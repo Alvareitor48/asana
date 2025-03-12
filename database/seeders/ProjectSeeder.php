@@ -15,7 +15,7 @@ class ProjectSeeder extends Seeder
 	{
 		$user1 = User::where('email', 'alvaro@mail.com')->first();
 		$user2 = User::where('email', 'test@example.com')->first();
-		$users = User::where('email', '!=', 'test@example.com')->get();
+		$users = User::where('email', '!=', 'test@example.com')->where('email', '!=', 'alvaro@mail.com')->get();
 
 
 		$project1 = Project::create([
@@ -30,10 +30,13 @@ class ProjectSeeder extends Seeder
 
 
 		$project1->users()->attach($user1->id, ['role' => 'owner']);
+		$project1->users()->attach($user2->id, ['role' => 'member']);
 		$project2->users()->attach($user2->id, ['role' => 'owner']);
+		$project2->users()->attach($user1->id, ['role' => 'member']);
 
 
 		$userIds = $users->pluck('id')->toArray();
 		$project2->users()->attach($userIds, ['role' => 'member']);
+		$project1->users()->attach($userIds, ['role' => 'member']);
 	}
 }
