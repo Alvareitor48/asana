@@ -4,6 +4,7 @@ import NavBar from '@/shared/components/NavBar'
 import House from '@/shared/icons/House'
 import Notify from '@/shared/icons/Notify'
 import Pen from '@/shared/icons/Pen'
+import { router, usePage } from '@inertiajs/react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
 import Add from '../icons/Add'
@@ -12,6 +13,7 @@ import ArrowDown from '../icons/ArrowDown'
 export default function AuthLayout({ children }) {
   const [isNavBarOpen, setIsNavBarOpen] = useState(true)
   const [dropProyect, setDropProyect] = useState(true)
+  const { projects } = usePage().props
 
   return (
     <>
@@ -20,7 +22,10 @@ export default function AuthLayout({ children }) {
         <AnimatePresence initial={false}>
           <NavBar isOpen={isNavBarOpen}>
             <div className="flex h-fit w-full flex-col items-center justify-center gap-4 px-1 py-5">
-              <CardNav name={isNavBarOpen ? 'Inicio' : ''}>
+              <CardNav
+                name={isNavBarOpen ? 'Inicio' : ''}
+                onClick={() => router.visit(route('home'))}
+              >
                 <House height="25px" width="25px" color="white" />
               </CardNav>
 
@@ -51,22 +56,20 @@ export default function AuthLayout({ children }) {
                 <div
                   className={`${dropProyect ? 'flex' : 'hidden'} flex-col justify-start items-start w-full h-fit gap-4 px-4`}
                 >
-                  <div className="text-white w-full h-fit hover:bg-white/30 cursor-pointer p-2 rounded-lg flex justify-start items-center gap-10">
-                    <div className="w-5 h-5 rounded-md bg-red-500" />
-                    <span>Backend</span>
-                  </div>
-                  <div className="text-white w-full h-fit hover:bg-white/30 cursor-pointer p-2 rounded-lg flex justify-start items-center gap-10">
-                    <div className="w-5 h-5 rounded-md bg-blue-500" />
-                    <span>Frontend</span>
-                  </div>
-                  <div className="text-white w-full h-fit hover:bg-white/30 cursor-pointer p-2 rounded-lg flex justify-start items-center gap-10">
-                    <div className="w-5 h-5 rounded-md bg-green-500" />
-                    <span>Devops</span>
-                  </div>
-                  <div className="text-white w-full h-fit hover:bg-white/30 cursor-pointer p-2 rounded-lg flex justify-start items-center gap-10">
-                    <div className="w-5 h-5 rounded-md bg-orange-500" />
-                    <span>UI/UX</span>
-                  </div>
+                  {projects.map((project) => (
+                    <div
+                      key={`project-${project.id}-${project.name}`}
+                      className="text-white w-full h-fit hover:bg-white/30 cursor-pointer p-2 rounded-lg flex justify-start items-center gap-10"
+                    >
+                      <div className="w-5 h-5 rounded-md bg-blue-500" />
+                      <button
+                        type="button"
+                        onClick={() => router.visit(route('project.show', project.id))}
+                      >
+                        {project.name}
+                      </button>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
