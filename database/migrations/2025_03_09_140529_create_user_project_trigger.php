@@ -23,8 +23,8 @@ return new class extends Migration
 
                 SET new_project_id = LAST_INSERT_ID();
 
-                INSERT INTO project_members (project_id, user_id, role)
-                VALUES (new_project_id, NEW.id, 'owner');
+                INSERT INTO project_members (project_id, user_id, role, created_at)
+                VALUES (new_project_id, NEW.id, 'owner', NOW());
             END
         ");
 	}
