@@ -1,7 +1,7 @@
 import GlassCard from '@/shared/components/GlassCard'
 import AuthLayout from '@/shared/layouts/AuthLayout'
 
-export default function Project({ project }) {
+export default function Project({ project, sections }) {
   return (
     <>
       <AuthLayout>
@@ -13,7 +13,7 @@ export default function Project({ project }) {
           </div>
 
           {/* mis tareas */}
-          {project.map((section) => (
+          {sections.map((section) => (
             <GlassCard>
               <h3 className="text-3xl font-kalam">{section.section}</h3>
               <div className="w-full h-full border-t border-white p-2">
