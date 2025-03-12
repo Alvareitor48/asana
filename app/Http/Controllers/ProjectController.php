@@ -15,7 +15,7 @@ class ProjectController extends Controller
 {
 	public function index()
 	{
-		return Inertia::render('projects/pages/ProjectsIndex', IndexProjectsResource::collection(
+		return Inertia::render('projects_and_tasks/pages/ProjectsIndex', IndexProjectsResource::collection(
 			Project::whereHas('users', function ($query) {
 				$query->where('user_id', auth()->id());
 			})->get()
@@ -24,8 +24,9 @@ class ProjectController extends Controller
 
 	public function show(Project $project)
 	{
-		return Inertia::render('projects/pages/Project', [
-			'project' => ProjectShowResource::collection($project->sections()->with('tasks')->get())->toArray(request())
+		return Inertia::render('projects_and_tasks/pages/Project', [
+			'sections' => ProjectShowResource::collection($project->sections()->with('tasks')->get())->toArray(request()),
+			'project' => (new IndexProjectsResource($project))->toArray(request()),
 		]);
 	}
 

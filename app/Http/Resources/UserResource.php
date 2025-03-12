@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class IndexProjectsResource extends JsonResource
+class UserResource extends JsonResource
 {
 	/**
 	 * Transform the resource into an array.
@@ -17,8 +17,7 @@ class IndexProjectsResource extends JsonResource
 		return [
 			'id' => $this->id,
 			'name' => $this->name,
-			'description' => $this->description,
-			'is_my_tasks' => $this->is_my_tasks,
+			'email' => $this->email,
 		];
 	}
 }
