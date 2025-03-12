@@ -15,8 +15,7 @@ return new class extends Migration
 			$table->id();
 			$table->string('title');
 			$table->text('description')->nullable();
-			$table->foreignId('assigned_to')->references('id')->on('users')->onDelete('cascade');
-			$table->foreignId('assigned_to')->references('id')->on('users')->onDelete('cascade')->nullable();
+			$table->foreignId('assigned_to')->nullable()->constrained('users')->onDelete('cascade');
 			$table->foreignId('section_id')->references('id')->on('sections')->onDelete('cascade');
 			$table->jsonb('attachment')->nullable();
 			$table->string('status')->default('pending');
