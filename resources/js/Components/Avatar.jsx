@@ -1,9 +1,9 @@
-const Avatar = () => {
-    return (
-        <div className="h-fit w-fit rounded-full">
-            <img className="rounded-full" width="40px" height="40px" src="https://www.w3schools.com/howto/img_avatar.png" alt="imagen de un tio" />
-        </div>
-    );
-};
+const Avatar = ({ name }) => {
+  return (
+    <div className="h-[40px] w-[40px] rounded-full bg-red-400 flex items-center justify-center">
+      <span className="text-3xl font-kalam">{name.toUpperCase().charAt(0)}</span>
+    </div>
+  )
+}
 
-export default Avatar;
+export default Avatar

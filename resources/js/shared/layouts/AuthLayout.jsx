@@ -13,12 +13,18 @@ import ArrowDown from '../icons/ArrowDown'
 export default function AuthLayout({ children }) {
   const [isNavBarOpen, setIsNavBarOpen] = useState(true)
   const [dropProyect, setDropProyect] = useState(true)
+
   const { projects, my_tasks } = usePage().props
+  const user = usePage().props.auth.user
 
   return (
     <>
       <div className="flex min-h-screen w-full flex-col overflow-x-hidden bg-custom-gradient bg-cover bg-center bg-no-repeat">
-        <Header isNavbarOpen={isNavBarOpen} toggleNavbar={() => setIsNavBarOpen(!isNavBarOpen)} />
+        <Header
+          name={user.name}
+          isNavbarOpen={isNavBarOpen}
+          toggleNavbar={() => setIsNavBarOpen(!isNavBarOpen)}
+        />
         <AnimatePresence initial={false}>
           <NavBar isOpen={isNavBarOpen}>
             <div className="flex h-fit w-full flex-col items-center justify-center gap-4 px-1 py-5">
