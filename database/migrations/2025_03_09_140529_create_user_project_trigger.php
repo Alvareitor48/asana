@@ -14,11 +14,12 @@ return new class extends Migration
             BEGIN
                 DECLARE new_project_id INT;
 
-                INSERT INTO projects (name, description, created_at)
+                INSERT INTO projects (name, description, is_my_tasks, created_at)
                 VALUES (
                     CONCAT('My Tasks ', NEW.name),
                     CONCAT('Personal tasks for user ', NEW.name),
-                    NOW()
+                    TRUE,
+					NOW()
                 );
 
                 SET new_project_id = LAST_INSERT_ID();

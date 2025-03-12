@@ -13,7 +13,7 @@ import ArrowDown from '../icons/ArrowDown'
 export default function AuthLayout({ children }) {
   const [isNavBarOpen, setIsNavBarOpen] = useState(true)
   const [dropProyect, setDropProyect] = useState(true)
-  const { projects } = usePage().props
+  const { projects, my_tasks } = usePage().props
 
   return (
     <>
@@ -29,7 +29,10 @@ export default function AuthLayout({ children }) {
                 <House height="25px" width="25px" color="white" />
               </CardNav>
 
-              <CardNav name={isNavBarOpen ? 'Mis Tareas' : ''}>
+              <CardNav
+                name={isNavBarOpen ? 'Mis Tareas' : ''}
+                onClick={() => router.visit(route('project.show', my_tasks.id))}
+              >
                 <Pen height="25px" width="25px" color="white" />
               </CardNav>
 
