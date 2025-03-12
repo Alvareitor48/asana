@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\IndexProjectsResource;
+use App\Http\Resources\ProjectShowResource;
+use App\Http\Resources\ShowProjectResource;
 use App\Models\Project;
+use App\Models\Task;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -21,7 +24,9 @@ class ProjectController extends Controller
 
 	public function show(Project $project)
 	{
-		// Mostrar las secciones y tareas de un proyecto especifico
+		return Inertia::render('projects/pages/Project', [
+			'project' => ProjectShowResource::collection($project->sections()->with('tasks')->get())->toArray(request())
+		]);
 	}
 
 	public function store(Request $request): RedirectResponse
