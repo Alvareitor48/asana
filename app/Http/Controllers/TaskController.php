@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\IndexProjectsResource;
 use App\Http\Resources\ResponsibleResource;
+use App\Http\Resources\TaskResource;
 use App\Models\Project;
 use App\Models\Section;
 use App\Models\Task;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TaskController extends Controller
 {
@@ -31,7 +33,10 @@ class TaskController extends Controller
 
 	public function edit(Project $project, Task $task)
 	{
-		// Mostrar formulario de edición de una tarea
+		return Inertia::render(
+			'projects_and_tasks/pages/EditTask',
+			['task' => new TaskResource($task)],
+		);
 	}
 
 	public function update(Request $request, Project $project, Task $task)
