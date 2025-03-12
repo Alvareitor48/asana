@@ -39,8 +39,16 @@ class HandleInertiaRequests extends Middleware
 			'projects' => auth()->check()
 				? IndexProjectsResource::collection(
 					Project::whereHas('users', fn($query) => $query->where('user_id', auth()->id()))
+						->where('is_my_tasks', false)
 						->get()
 				)->toArray($request)
+				: [],
+			'my_tasks' => auth()->check()
+				? (new IndexProjectsResource(
+					Project::whereHas('users', fn($query) => $query->where('user_id', auth()->id()))
+						->where('is_my_tasks', true)
+						->first()
+				))->toArray($request)
 				: [],
 		];
 	}
