@@ -55,25 +55,36 @@ export default function AuthLayout({ children }) {
                     <Add height="25px" width="25px" color="white" />
                   </button>
                 </header>
-
-                <div
-                  className={`${dropProyect ? 'flex' : 'hidden'} flex-col justify-start items-start w-full h-fit gap-4 px-4`}
-                >
-                  {projects.map((project) => (
-                    <div
-                      key={`project-${project.id}-${project.name}`}
-                      className="text-white w-full h-fit hover:bg-white/30 cursor-pointer p-2 rounded-lg flex justify-start items-center gap-10"
+                <AnimatePresence>
+                  {dropProyect && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.3 }}
+                      className={`flex flex-col justify-start items-start w-full h-fit gap-4 px-4`}
                     >
-                      <div className="w-5 h-5 rounded-md bg-blue-500" />
-                      <button
-                        type="button"
-                        onClick={() => router.visit(route('project.show', project.id))}
-                      >
-                        {project.name}
-                      </button>
-                    </div>
-                  ))}
-                </div>
+                      {projects.map((project) => (
+                        <motion.div
+                          key={`project-${project.id}-${project.name}`}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="text-white w-full h-fit hover:bg-white/30 cursor-pointer p-2 rounded-lg flex justify-start items-center gap-10"
+                        >
+                          <div className="w-5 h-5 rounded-md bg-blue-500" />
+                          <button
+                            type="button"
+                            onClick={() => router.visit(route('project.show', project.id))}
+                          >
+                            {project.name}
+                          </button>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             )}
           </NavBar>
