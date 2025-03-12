@@ -25,7 +25,8 @@ class ProjectController extends Controller
 	public function show(Project $project)
 	{
 		return Inertia::render('projects_and_tasks/pages/Project', [
-			'project' => ProjectShowResource::collection($project->sections()->with('tasks')->get())->toArray(request())
+			'sections' => ProjectShowResource::collection($project->sections()->with('tasks')->get())->toArray(request()),
+			'project' => (new IndexProjectsResource($project))->toArray(request()),
 		]);
 	}
 
