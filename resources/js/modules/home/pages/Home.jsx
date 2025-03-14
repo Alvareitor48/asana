@@ -54,7 +54,11 @@ export default function Home({ auth }) {
                 <Add width="25px" height="25px" color="red" />
               </CardNav>
               {projects.map((project) => (
-                <CardNav className="w-fit h-fit border border-white" name={project.name}>
+                <CardNav
+                  key={project.id}
+                  className="w-fit h-fit border border-white"
+                  name={project.name}
+                >
                   <div className="w-5 h-5 rounded-md bg-blue-500" />
                 </CardNav>
               ))}
