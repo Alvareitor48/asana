@@ -4,20 +4,9 @@ import ArrowDown from '@/shared/icons/ArrowDown'
 import ArrowUp from '@/shared/icons/ArrowUp'
 import React from 'react'
 
-const getPriorityClass = (priority) => {
-  switch (priority) {
-    case 'Alta':
-      return 'bg-red-200 text-red-800'
-    case 'Media':
-      return 'bg-orange-200 text-orange-800'
-    case 'Baja':
-      return 'bg-green-200 text-green-800'
-    default:
-      return 'bg-gray-200 text-gray-800'
-  }
-}
-
 const Tbody = ({ sections, collapsedSections, toggleSection, openModal }) => {
+  console.log(sections)
+
   return (
     <tbody>
       {sections.map((section) => (
@@ -26,50 +15,42 @@ const Tbody = ({ sections, collapsedSections, toggleSection, openModal }) => {
 
           <tr
             className="bg-gray-800 border-b border-gray-700 cursor-pointer hover:bg-gray-700"
-            onClick={() => toggleSection(section.id)}
+            onClick={() => toggleSection(section.section)}
           >
             <td className="px-4 py-2 font-semibold flex items-center text-white">
-              {collapsedSections[section.id] ? (
+              {collapsedSections[section.section] ? (
                 <ArrowUp height="25px" width="25px" color="white" />
               ) : (
                 <ArrowDown height="25px" width="25px" color="white" />
               )}
-              <span>
-                {section.name} {section.icon}
-              </span>
+              <span>{section.section} 🔥</span>
             </td>
             <td colSpan={4}></td>
           </tr>
 
           {/* Filas de tareas (visibles cuando la sección no está colapsada) */}
-          {!collapsedSections[section.id] &&
+          {!collapsedSections[section.section] &&
             section.tasks.map((task) => (
               <tr key={task.id} className="border-b border-gray-700 hover:bg-gray-800">
                 <td className="px-4 py-2 pl-10 text-gray-300 flex items-center">
                   <div className="w-5 h-5 rounded-full border border-gray-400 flex items-center justify-center mr-2">
-                    {task.complete && '✔'}
+                    {!!task.status && '✔'}
                   </div>
-                  {task.name}
+                  {task.title}
                 </td>
                 <td className="px-4 py-2">
                   <div className="w-8 h-8 rounded-full bg-purple-700 flex items-center justify-center text-white">
-                    {task.assignee}
+                    <span>A</span>
                   </div>
                 </td>
                 <td className="px-4 py-2">
                   <div className="w-6 h-6 rounded-full border border-gray-400"></div>
                 </td>
-                <td className="px-4 py-2">
-                  <span className={`px-2 py-1 rounded text-xs ${getPriorityClass(task.priority)}`}>
-                    {task.priority}
-                  </span>
-                </td>
-                <td className="px-4 py-2"></td>
               </tr>
             ))}
 
           {/* Fila para agregar tarea (visible cuando la sección no está colapsada) */}
-          {!collapsedSections[section.id] && (
+            {!collapsedSections[section.section] && (
             <tr className="border-b border-gray-700 text-gray-400  hover:bg-gray-800 cursor-pointer">
               <td className="px-4 py-2 pl-10">
                 <button onClick={openModal}>Agegar Tarea...</button>

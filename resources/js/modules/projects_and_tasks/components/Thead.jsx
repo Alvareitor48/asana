@@ -5,7 +5,6 @@ const Thead = () => {
         <th className="px-4 py-2">Nombre</th>
         <th className="px-4 py-2">Responsable</th>
         <th className="px-4 py-2">Fecha de entrega</th>
-        <th className="px-4 py-2">Prioridad</th>
       </tr>
     </thead>
   )

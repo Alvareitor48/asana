@@ -6,14 +6,15 @@ import { useRef, useState } from 'react'
 import Tbody from '../components/Tbody'
 import Thead from '../components/Thead'
 
-export default function Project({ project }) {
-  const [collapsedSections, setCollapsedSections] = useState({
-    'ready-to-start': false,
-    'not-started': true,
-    'in-progress': true,
-    'in-review': true,
-    'needs-changes': true,
-    completed: true,
+export default function Project({ project, sections: sec }) {
+  const [collapsedSections, setCollapsedSections] = useState(() => {
+    const initialState = []
+
+    sec.map((section) => {
+      initialState[section.section] = false
+    })
+
+    return initialState
   })
 
   const containerRef = useRef(null)
@@ -26,24 +27,23 @@ export default function Project({ project }) {
   const sections = [
     {
       id: 'ready-to-start',
-      name: 'Listo para empezar',
-      icon: '🔥',
+      name: 'Listo para empezar 🔥',
       tasks: [
         {
           id: 1,
           name: 'loading cuando carga alguna sección',
           assignee: 'g',
-          priority: 'Baja',
+
           complete: false,
         },
-        { id: 2, name: 'modal editar tarea', assignee: 'g', priority: 'Alta', complete: false },
-        { id: 3, name: 'modal crear proyecto', assignee: 'g', priority: 'Baja', complete: false },
-        { id: 4, name: 'modal crear tarea', assignee: 'g', priority: 'Media', complete: false },
+        { id: 2, name: 'modal editar tarea', assignee: 'g', complete: false },
+        { id: 3, name: 'modal crear proyecto', assignee: 'g', complete: false },
+        { id: 4, name: 'modal crear tarea', assignee: 'g', complete: false },
         {
           id: 5,
           name: 'animaicon aparece y deaparece proyectos',
           assignee: 'al',
-          priority: 'Sin prioridad',
+
           complete: false,
         },
       ],
@@ -57,14 +57,14 @@ export default function Project({ project }) {
           id: 6,
           name: 'Implementación de animaciones avanzadas',
           assignee: 'g',
-          priority: 'Baja',
+
           complete: false,
         },
         {
           id: 7,
           name: 'Optimización de rendimiento',
           assignee: 'al',
-          priority: 'Media',
+
           complete: false,
         },
       ],
@@ -78,14 +78,14 @@ export default function Project({ project }) {
           id: 8,
           name: 'Desarrollo de componentes UI',
           assignee: 'g',
-          priority: 'Alta',
+
           complete: false,
         },
         {
           id: 9,
           name: 'Integración con API backend',
           assignee: 'al',
-          priority: 'Alta',
+
           complete: false,
         },
       ],
@@ -95,8 +95,8 @@ export default function Project({ project }) {
       name: 'En revisión',
       icon: '🔍',
       tasks: [
-        { id: 10, name: 'Diseño responsive', assignee: 'g', priority: 'Media', complete: false },
-        { id: 11, name: 'Validación de datos', assignee: 'al', priority: 'Alta', complete: false },
+        { id: 10, name: 'Diseño responsive', assignee: 'g', complete: false },
+        { id: 11, name: 'Validación de datos', assignee: 'al', complete: false },
       ],
     },
     {
@@ -108,10 +108,10 @@ export default function Project({ project }) {
           id: 12,
           name: 'Modal de autenticación',
           assignee: 'g',
-          priority: 'Alta',
+
           complete: false,
         },
-        { id: 13, name: 'Menú de navegación', assignee: 'al', priority: 'Media', complete: false },
+        { id: 13, name: 'Menú de navegación', assignee: 'al', complete: false },
       ],
     },
     {
@@ -123,10 +123,10 @@ export default function Project({ project }) {
           id: 14,
           name: 'Configuración de repositorio Git',
           assignee: 'g',
-          priority: 'Alta',
+
           complete: true,
         },
-        { id: 15, name: 'Wireframes iniciales', assignee: 'al', priority: 'Media', complete: true },
+        { id: 15, name: 'Wireframes iniciales', assignee: 'al', complete: true },
       ],
     },
   ]
@@ -158,7 +158,7 @@ export default function Project({ project }) {
               <Thead />
               <Tbody
                 openModal={openModal}
-                sections={sections}
+                sections={sec}
                 toggleSection={toggleSection}
                 collapsedSections={collapsedSections}
               />
@@ -217,9 +217,9 @@ export default function Project({ project }) {
                 name="section"
                 className="name mt-1 block w-full text-white bg-slate-400/30 rounded-md border-white/80"
               >
-                {sections.map((section) => (
-                  <option className="bg-gray-700" key={section.id} value={section.id}>
-                    {section.name}
+                {sec.map((section) => (
+                  <option className="bg-gray-700" key={section.section} value={section.section}>
+                    {section.section}
                   </option>
                 ))}
               </select>
