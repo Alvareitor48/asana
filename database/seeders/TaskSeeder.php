@@ -23,7 +23,7 @@ class TaskSeeder extends Seeder
 			[
 				'assigned_to' => $user1->id,
 				'section_id' => $section->id,
-				'status' => 'pending',
+				'status' => false,
 				'attachment' => null,
 				'due_date' => null
 			],
