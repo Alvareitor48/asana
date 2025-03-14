@@ -17,7 +17,7 @@ const getPriorityClass = (priority) => {
   }
 }
 
-const Tbody = ({ sections, collapsedSections, toggleSection }) => {
+const Tbody = ({ sections, collapsedSections, toggleSection, openModal }) => {
   return (
     <tbody>
       {sections.map((section) => (
@@ -71,7 +71,9 @@ const Tbody = ({ sections, collapsedSections, toggleSection }) => {
           {/* Fila para agregar tarea (visible cuando la sección no está colapsada) */}
           {!collapsedSections[section.id] && (
             <tr className="border-b border-gray-700 text-gray-400  hover:bg-gray-800 cursor-pointer">
-              <td className="px-4 py-2 pl-10">Agregar tarea...</td>
+              <td className="px-4 py-2 pl-10">
+                <button onClick={openModal}>Agegar Tarea...</button>
+              </td>
               <td colSpan={4}></td>
             </tr>
           )}

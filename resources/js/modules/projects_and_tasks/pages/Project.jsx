@@ -1,5 +1,8 @@
+import InputLabel from '@/modules/auth/components/InputLabel'
+import TextInput from '@/modules/auth/components/TextInput'
+import Modal from '@/shared/components/Modal'
 import AuthLayout from '@/shared/layouts/AuthLayout'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Tbody from '../components/Tbody'
 import Thead from '../components/Thead'
 
@@ -12,6 +15,13 @@ export default function Project({ project }) {
     'needs-changes': true,
     completed: true,
   })
+
+  const containerRef = useRef(null)
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const openModal = () => setIsModalOpen(true)
+  const closeModal = () => setIsModalOpen(false)
 
   const sections = [
     {
@@ -131,9 +141,12 @@ export default function Project({ project }) {
   return (
     <>
       <AuthLayout>
-        <div className="w-full flex flex-col justify-start items-start  rounded-xl  container-glass gap-4 h-full">
+        <div
+          ref={containerRef}
+          className="w-full flex flex-col justify-start items-start  rounded-xl  container-glass gap-4 h-full"
+        >
           {/* header */}
-          <div className="flex items-center justify-between p-4 w-full bg-gray-900">
+          <div className="flex items-center justify-between p-4 w-full bg-gray-900 ">
             <div className="flex items-center">
               <h1 className="text-xl font-bold text-white">{project.name}</h1>
             </div>
@@ -144,6 +157,7 @@ export default function Project({ project }) {
             <table className="w-full border-collapse">
               <Thead />
               <Tbody
+                openModal={openModal}
                 sections={sections}
                 toggleSection={toggleSection}
                 collapsedSections={collapsedSections}
@@ -151,6 +165,67 @@ export default function Project({ project }) {
             </table>
           </div>
         </div>
+
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
+          <div className="text-white flex flex-col justify-start items-start w-full">
+            <h2 className="self-center text-3xl">Nueva Tarea</h2>
+            {/* nombre tarea */}
+            <div className="flex justify-between items-center gap-10 my-5 w-full">
+              <TextInput
+                id="name"
+                type="text"
+                name="password"
+                className="name mt-1 block w-full text-white bg-slate-400/30"
+              />
+            </div>
+
+            {/* responsable */}
+            <div className="flex justify-between items-center gap-10 my-5 w-full">
+              <InputLabel
+                className="text-white w-[100px]"
+                htmlFor="responsable"
+                value="Responsable"
+              />
+              <TextInput
+                id="name"
+                type="text"
+                name="responsable"
+                className="name mt-1 block w-full text-white bg-slate-400/30"
+              />
+            </div>
+
+            {/* fecha entrga */}
+            <div className="flex justify-between items-center gap-10 my-5 w-full">
+              <InputLabel
+                className="text-white w-[100px]"
+                htmlFor="responsable"
+                value="Fecha de entrega"
+              />
+              <TextInput
+                id="name"
+                type="date"
+                name="date"
+                className="name mt-1 block w-full text-white bg-slate-400/30"
+              />
+            </div>
+
+            {/* secciones asignables */}
+            <div className="flex justify-between items-center gap-10 my-5 w-full">
+              <InputLabel className="text-white w-[100px]" htmlFor="section" value="Sección" />
+              <select
+                id="section"
+                name="section"
+                className="name mt-1 block w-full text-white bg-slate-400/30 rounded-md border-white/80"
+              >
+                {sections.map((section) => (
+                  <option className="bg-gray-700" key={section.id} value={section.id}>
+                    {section.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </Modal>
       </AuthLayout>
     </>
   )
