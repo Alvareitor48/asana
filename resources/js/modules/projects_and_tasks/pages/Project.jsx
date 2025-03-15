@@ -40,6 +40,7 @@ export default function Project({ project, sections: sec }) {
                 sections={sec}
                 toggleSection={toggleSection}
                 collapsedSections={collapsedSections}
+                projectId={project.id}
               />
             </table>
           </div>
