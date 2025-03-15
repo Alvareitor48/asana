@@ -3,7 +3,9 @@
 namespace App\Http\Middleware;
 
 use App\Http\Resources\IndexProjectsResource;
+use App\Http\Resources\UserResource;
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -49,6 +51,15 @@ class HandleInertiaRequests extends Middleware
 						->where('is_my_tasks', true)
 						->first()
 				))->toArray($request)
+				: [],
+			'collaborators' => auth()->check() && request()->route('project')
+				? UserResource::collection(
+					User::whereHas(
+						'projects',
+						fn($query) =>
+						$query->where('projects.id', request()->route('project')->id)
+					)->get()
+				)->toArray($request)
 				: [],
 		];
 	}

@@ -2,6 +2,7 @@ import InputLabel from '@/modules/auth/components/InputLabel'
 import TextInput from '@/modules/auth/components/TextInput'
 import Modal from '@/shared/components/Modal'
 import AuthLayout from '@/shared/layouts/AuthLayout'
+import { usePage } from '@inertiajs/react'
 import { useRef, useState } from 'react'
 import Tbody from '../components/Tbody'
 import Thead from '../components/Thead'
@@ -11,14 +12,14 @@ export default function Project({ project, sections: sec }) {
     const initialState = []
 
     sec.map((section) => {
-      initialState[section.section] = false
+      initialState[section.section.name] = false
     })
 
     return initialState
   })
 
   const containerRef = useRef(null)
-
+  const { collaborators } = usePage().props
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const openModal = () => setIsModalOpen(true)
@@ -131,10 +132,10 @@ export default function Project({ project, sections: sec }) {
     },
   ]
 
-  const toggleSection = (sectionId) => {
+  const toggleSection = (sectionName) => {
     setCollapsedSections({
       ...collapsedSections,
-      [sectionId]: !collapsedSections[sectionId],
+      [sectionName]: !collapsedSections[sectionName],
     })
   }
 
@@ -186,12 +187,19 @@ export default function Project({ project, sections: sec }) {
                 htmlFor="responsable"
                 value="Responsable"
               />
-              <TextInput
-                id="name"
-                type="text"
+              <select
+                id="responsable"
                 name="responsable"
-                className="name mt-1 block w-full text-white bg-slate-400/30"
-              />
+                className="name mt-1 block w-full text-white bg-slate-400/30 rounded-md border-white/80"
+              >
+                {collaborators.map((collaborator) => (
+                  <option className="bg-gray-700" key={collaborator.id} value={collaborator.id}>
+                    {collaborator.name}
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {collaborator.email}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* fecha entrga */}
@@ -218,8 +226,12 @@ export default function Project({ project, sections: sec }) {
                 className="name mt-1 block w-full text-white bg-slate-400/30 rounded-md border-white/80"
               >
                 {sec.map((section) => (
-                  <option className="bg-gray-700" key={section.section} value={section.section}>
-                    {section.section}
+                  <option
+                    className="bg-gray-700"
+                    key={section.section.id}
+                    value={section.section.id}
+                  >
+                    {section.section.name}
                   </option>
                 ))}
               </select>

@@ -5,31 +5,28 @@ import ArrowUp from '@/shared/icons/ArrowUp'
 import React from 'react'
 
 const Tbody = ({ sections, collapsedSections, toggleSection, openModal }) => {
-  console.log(sections)
-
   return (
     <tbody>
       {sections.map((section) => (
-        <React.Fragment key={section.id}>
+        <React.Fragment key={section.section.id}>
           {/* Fila de encabezado de sección (colapsable) */}
-
           <tr
             className="bg-gray-800 border-b border-gray-700 cursor-pointer hover:bg-gray-700"
-            onClick={() => toggleSection(section.section)}
+            onClick={() => toggleSection(section.section.name)}
           >
             <td className="px-4 py-2 font-semibold flex items-center text-white">
-              {collapsedSections[section.section] ? (
+              {collapsedSections[section.section.name] ? (
                 <ArrowUp height="25px" width="25px" color="white" />
               ) : (
                 <ArrowDown height="25px" width="25px" color="white" />
               )}
-              <span>{section.section} 🔥</span>
+              <span>{section.section.name} 🔥</span>
             </td>
             <td colSpan={4}></td>
           </tr>
 
           {/* Filas de tareas (visibles cuando la sección no está colapsada) */}
-          {!collapsedSections[section.section] &&
+          {!collapsedSections[section.section.name] &&
             section.tasks.map((task) => (
               <tr key={task.id} className="border-b border-gray-700 hover:bg-gray-800">
                 <td className="px-4 py-2 pl-10 text-gray-300 flex items-center">
@@ -50,7 +47,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, openModal }) => {
             ))}
 
           {/* Fila para agregar tarea (visible cuando la sección no está colapsada) */}
-            {!collapsedSections[section.section] && (
+          {!collapsedSections[section.section.name] && (
             <tr className="border-b border-gray-700 text-gray-400  hover:bg-gray-800 cursor-pointer">
               <td className="px-4 py-2 pl-10">
                 <button onClick={openModal}>Agegar Tarea...</button>
