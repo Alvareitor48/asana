@@ -6,7 +6,7 @@ import NavBar from '@/shared/components/NavBar'
 import House from '@/shared/icons/House'
 import Notify from '@/shared/icons/Notify'
 import Pen from '@/shared/icons/Pen'
-import { router, usePage } from '@inertiajs/react'
+import { router, useForm, usePage } from '@inertiajs/react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useRef, useState } from 'react'
 import Modal from '../components/Modal'
@@ -18,12 +18,27 @@ export default function AuthLayout({ children }) {
   const user = usePage().props.auth.user
 
   const [isNavBarOpen, setIsNavBarOpen] = useState(true)
-  const [dropProyect, setDropProyect] = useState(true)
+  const [dropProject, setDropProject] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const containerRef = useRef(null)
 
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
+
+  const { data, setData, post, processing, errors, reset } = useForm({
+    name: '',
+    description: '',
+  })
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    post(route('project.store'), {
+      onSuccess: () => {
+        reset()
+        setIsModalOpen(false)
+      },
+    })
+  }
 
   return (
     <>
@@ -63,9 +78,9 @@ export default function AuthLayout({ children }) {
                 <header className="w-full h-fit flex justify-between px-4 items-center text-white">
                   <button
                     className="w-fit h-fit hover:bg-white/30  rounded-lg p-2"
-                    onClick={() => setDropProyect((prev) => !prev)}
+                    onClick={() => setDropProject((prev) => !prev)}
                   >
-                    <ArrowDown height="25px" width="25px" color="white" isActive={dropProyect} />
+                    <ArrowDown height="25px" width="25px" color="white" isActive={dropProject} />
                   </button>
                   <span>Proyectos</span>
                   <button
@@ -76,7 +91,7 @@ export default function AuthLayout({ children }) {
                   </button>
                 </header>
                 <AnimatePresence>
-                  {dropProyect && (
+                  {dropProject && (
                     <motion.div
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -128,7 +143,7 @@ export default function AuthLayout({ children }) {
         <div className="text-white flex flex-col justify-start items-start w-full">
           <h2 className="self-center text-3xl">Nuevo Proyecto</h2>
           {/* nombre tarea */}
-          <form className="w-full h-fit">
+          <form onSubmit={handleSubmit} className="w-full h-fit">
             <div className="flex justify-between items-center gap-10 my-5 w-full">
               <InputLabel
                 className="text-white w-[100px]"
@@ -139,10 +154,12 @@ export default function AuthLayout({ children }) {
                 id="name"
                 type="text"
                 name="name"
+                value={data.name}
+                onChange={(e) => setData('name', e.target.value)}
                 className="name mt-1 block w-full text-white bg-slate-400/30"
               />
             </div>
-
+            {errors.name && <p className="text-red-500 text-center">{errors.name}</p>}
             <div className="flex justify-between items-center gap-10 my-5 w-full">
               <InputLabel
                 className="text-white w-[100px]"
@@ -153,11 +170,19 @@ export default function AuthLayout({ children }) {
                 id="name"
                 type="text"
                 name="name"
+                value={data.description}
+                onChange={(e) => setData('description', e.target.value)}
                 className="name mt-1 block w-full text-white bg-slate-400/30"
               />
             </div>
-            <button className="mb-2 w-full bg-white text-black rounded-md px-4 py-1 transition-transform duration-200 hover:scale-105 active:scale-95">
-              Crear
+            {errors.description && (
+              <p className="text-red-500 text-center mb-3">{errors.description}</p>
+            )}
+            <button
+              disabled={processing}
+              className="mb-2 w-full bg-white text-black rounded-md px-4 py-1 transition-transform duration-200 hover:scale-105 active:scale-95"
+            >
+              {processing ? 'Creando...' : 'Crear'}
             </button>
           </form>
         </div>
