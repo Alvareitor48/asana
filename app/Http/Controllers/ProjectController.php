@@ -34,13 +34,19 @@ class ProjectController extends Controller
 	{
 		$request->validate([
 			'name' => 'required|string|max:255',
-			'description' => 'required|string|max:255',
+			'description' => 'string|max:255|nullable',
+		], [
+			'name.required' => 'El nombre es obligatorio.',
+			'name.string' => 'El nombre debe ser una cadena de texto.',
+			'name.max' => 'El nombre no puede superar los 255 caracteres.',
+			'description.string' => 'La descripción debe ser una cadena de texto.',
+			'description.max' => 'La descripción no puede superar los 255 caracteres.',
 		]);
 		$project = Project::create([
 			'name' => $request->name,
 			'description' => $request->description,
-			'user_id' => auth()->id(),
 		]);
+		$project->users()->attach(auth()->id(), ['role' => 'owner']);
 		return redirect(route('project.show', $project));
 	}
 }
