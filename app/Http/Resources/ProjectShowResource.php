@@ -15,13 +15,17 @@ class ProjectShowResource extends JsonResource
 	public function toArray(Request $request): array
 	{
 		return [
-			'section' => $this->name,
+			'section' => [
+				'id' => $this->id,
+				'name' => $this->name
+			],
 			'tasks' => $this->tasks->map(fn($task) => [
 				'id' => $task->id,
 				'title' => $task->title,
 				'description' => $task->description,
 				'status' => $task->status,
 				'due_date' => $task->due_date,
+				'assigned_to' => $task->assignedTo ? new UserResource($task->assignedTo) : null,
 			])->toArray(),
 		];
 	}
