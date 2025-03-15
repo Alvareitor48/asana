@@ -19,13 +19,10 @@ class TaskController extends Controller
 		// Mostrar detalles de una tarea
 	}
 
-	public function store(Request $request, Project $project, Section $section): RedirectResponse
+	public function store(Project $project, Section $section): RedirectResponse
 	{
-		$validated = $request->validate([
-			'title' => 'required|string|max:255',
-		]);
 		Task::create([
-			'title' => $request->title,
+			'title' => "Nueva tarea",
 			'section_id' => $section->id,
 		]);
 		return redirect(route('project.show', $project));

@@ -5,10 +5,10 @@ import Modal from '@/shared/components/Modal'
 import Add from '@/shared/icons/Add'
 import ArrowDown from '@/shared/icons/ArrowDown'
 import ArrowUp from '@/shared/icons/ArrowUp'
-import { usePage } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import React, { useRef, useState } from 'react'
 
-const Tbody = ({ sections, collapsedSections, toggleSection }) => {
+const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
   const { collaborators } = usePage().props
   const [isModalOpen, setIsModalOpen] = useState(false)
   const containerRef = useRef(null)
@@ -19,6 +19,10 @@ const Tbody = ({ sections, collapsedSections, toggleSection }) => {
     setSelectedTask(task)
   }
   const closeModal = () => setIsModalOpen(false)
+
+  const handleCreateTask = (sectionId) => {
+    sectionId && router.post(route('tasks.store', { project: projectId, section: sectionId }))
+  }
 
   return (
     <tbody ref={containerRef}>
@@ -63,10 +67,11 @@ const Tbody = ({ sections, collapsedSections, toggleSection }) => {
 
           {/* Fila para agregar tarea (visible cuando la sección no está colapsada) */}
           {!collapsedSections[section.section.name] && (
-            <tr className="border-b border-gray-700 text-gray-400  hover:bg-gray-800 cursor-pointer">
-              <td className="px-4 py-2 pl-10">
-                <button>Agegar Tarea...</button>
-              </td>
+            <tr
+              className="border-b border-gray-700 text-gray-400  hover:bg-gray-800 cursor-pointer"
+              onClick={() => handleCreateTask(section.section.id)}
+            >
+              <td className="px-4 py-2 pl-10">Agegar Tarea...</td>
               <td colSpan={4}></td>
             </tr>
           )}
