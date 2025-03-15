@@ -4,7 +4,7 @@ import ArrowDown from '@/shared/icons/ArrowDown'
 import ArrowUp from '@/shared/icons/ArrowUp'
 import React from 'react'
 
-const Tbody = ({ sections, collapsedSections, toggleSection, openModal }) => {
+const Tbody = ({ sections, collapsedSections, toggleSection }) => {
   return (
     <tbody>
       {sections.map((section) => (
@@ -50,7 +50,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, openModal }) => {
           {!collapsedSections[section.section.name] && (
             <tr className="border-b border-gray-700 text-gray-400  hover:bg-gray-800 cursor-pointer">
               <td className="px-4 py-2 pl-10">
-                <button onClick={openModal}>Agegar Tarea...</button>
+                <button>Agegar Tarea...</button>
               </td>
               <td colSpan={4}></td>
             </tr>
