@@ -19,6 +19,7 @@ class IndexProjectsResource extends JsonResource
 			'name' => $this->name,
 			'description' => $this->description,
 			'is_my_tasks' => $this->is_my_tasks,
+			'color_icon' => $this->color_icon,
 		];
 	}
 }

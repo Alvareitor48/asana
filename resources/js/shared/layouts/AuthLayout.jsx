@@ -93,7 +93,10 @@ export default function AuthLayout({ children }) {
                           transition={{ duration: 0.3 }}
                           className="text-white w-full h-fit hover:bg-white/30 cursor-pointer p-2 rounded-lg flex justify-start items-center gap-10"
                         >
-                          <div className="w-5 h-5 rounded-md bg-blue-500" />
+                          <div
+                            className="w-5 h-5 rounded-md"
+                            style={{ backgroundColor: project.color_icon }}
+                          />
                           <button
                             type="button"
                             onClick={() => router.visit(route('project.show', project.id))}

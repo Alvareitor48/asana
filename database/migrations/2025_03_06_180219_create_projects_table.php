@@ -16,6 +16,7 @@ return new class extends Migration
 			$table->string('name');
 			$table->text('description')->nullable();
 			$table->boolean('is_my_tasks')->default(false);
+			$table->string('color_icon')->default('#3B83BD');
 			$table->timestamps();
 		});
 	}
