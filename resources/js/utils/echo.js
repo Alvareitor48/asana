@@ -3,15 +3,22 @@ import Pusher from 'pusher-js'
 
 window.Pusher = Pusher
 
-const echo = new Echo({
-  broadcaster: 'pusher',
-  key: import.meta.env.VITE_PUSHER_KEY,
-  cluster: import.meta.env.VITE_PUSHER_CLUSTER,
-  forceTLS: true,
-  wsHost: `ws-${import.meta.env.VITE_PUSHER_CLUSTER}.pusher.com`,
-  wsPort: 443, // Puerto para WebSockets seguros
-  wssPort: 443, // Puerto para WebSockets seguros (TLS)
-  enabledTransports: ['ws', 'wss'], // Solo permitir WebSockets
-})
+let echoInstance = null
 
-export default echo
+export const initEcho = (pusherConfig) => {
+  if (!echoInstance && pusherConfig) {
+    echoInstance = new Echo({
+      broadcaster: 'pusher',
+      key: pusherConfig.key,
+      cluster: pusherConfig.cluster,
+      forceTLS: true,
+      wsHost: `ws-${pusherConfig.cluster}.pusher.com`,
+      wsPort: 443,
+      wssPort: 443,
+      enabledTransports: ['ws', 'wss'],
+    })
+  }
+  return echoInstance
+}
+
+export default echoInstance
