@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ProjectCreated;
 use App\Http\Resources\IndexProjectsResource;
 use App\Http\Resources\ProjectShowResource;
 use App\Http\Resources\ShowProjectResource;
@@ -47,6 +48,7 @@ class ProjectController extends Controller
 			'description' => $request->description,
 		]);
 		$project->users()->attach(auth()->id(), ['role' => 'owner']);
+		broadcast(new ProjectCreated($project))->toOthers();
 		return redirect(route('project.show', $project));
 	}
 }

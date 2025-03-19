@@ -3,13 +3,26 @@ import CardNav from '@/shared/components/CardNav'
 import GlassCard from '@/shared/components/GlassCard'
 import Add from '@/shared/icons/Add'
 import AuthLayout from '@/shared/layouts/AuthLayout'
+import echo from '@/utils/echo'
 import { usePage } from '@inertiajs/react'
+import { useEffect, useState } from 'react'
 
 export default function Home({ auth }) {
-  const { projects } = usePage().props
+  const { projects: initialProjects } = usePage().props
+  const [projects, setProjects] = useState(initialProjects)
   const user = usePage().props.auth.user
 
-  console.log(projects)
+  useEffect(() => {
+    const channel = echo.channel('projects')
+
+    channel.listen('.project.created', (event) => {
+      setProjects((prevProjects) => [...prevProjects, event.project])
+    })
+
+    return () => {
+      channel.stopListening('.project.created')
+    }
+  }, [])
 
   return (
     <>
