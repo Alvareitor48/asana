@@ -26,7 +26,7 @@ class TaskController extends Controller
 			'title' => "Nueva tarea",
 			'section_id' => $section->id,
 		]);
-		broadcast(new TaskUpdated($task))->toOthers();
+		broadcast(new TaskUpdated($task));
 		return redirect(route('project.show', $project));
 	}
 
