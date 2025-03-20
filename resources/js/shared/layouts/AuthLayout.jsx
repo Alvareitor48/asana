@@ -53,7 +53,7 @@ export default function AuthLayout({ children }) {
         />
         <AnimatePresence initial={false}>
           <NavBar isOpen={isNavBarOpen}>
-            <div className="flex h-fit w-full flex-col items-center justify-center gap-4 px-1 py-5">
+            <div className="flex h-fit w-full flex-col items-center justify-center gap-4 px-1 py-5 ">
               <CardNav
                 name={isNavBarOpen ? 'Inicio' : ''}
                 onClick={() => router.visit(route('home'))}
@@ -97,7 +97,7 @@ export default function AuthLayout({ children }) {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.3 }}
-                      className={`flex flex-col justify-start items-start w-full h-fit gap-4 px-4`}
+                      className={`flex flex-col justify-start items-start w-full h-[40%] gap-4 px-4 overflow-y-scroll scrollable-container`}
                     >
                       {projects.map((project) => (
                         <motion.div
@@ -106,7 +106,7 @@ export default function AuthLayout({ children }) {
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                           transition={{ duration: 0.3 }}
-                          className="text-white w-full h-fit hover:bg-white/30 cursor-pointer p-2 rounded-lg flex justify-start items-center gap-10"
+                          className="text-white w-full h-fit hover:bg-white/30 cursor-pointer p-2 rounded-lg flex justify-start items-center gap-2"
                         >
                           <div
                             className="w-5 h-5 rounded-md"
