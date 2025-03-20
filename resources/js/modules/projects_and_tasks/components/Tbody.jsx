@@ -5,14 +5,16 @@ import Modal from '@/shared/components/Modal'
 import Add from '@/shared/icons/Add'
 import ArrowDown from '@/shared/icons/ArrowDown'
 import ArrowUp from '@/shared/icons/ArrowUp'
+import { initEcho } from '@/utils/echo'
 import { router, usePage } from '@inertiajs/react'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
-  const { collaborators } = usePage().props
+  const { collaborators, pusher } = usePage().props
   const [isModalOpen, setIsModalOpen] = useState(false)
   const containerRef = useRef(null)
   const [selectedTask, setSelectedTask] = useState(null)
+  const [updatedSections, setSections] = useState(sections)
 
   const openModal = (task) => {
     setIsModalOpen(true)
@@ -24,9 +26,34 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
     sectionId && router.post(route('tasks.store', { project: projectId, section: sectionId }))
   }
 
+  useEffect(() => {
+    if (pusher) {
+      const echo = initEcho(pusher)
+      echo.channel('tasks').listen('.task.updated', (event) => {
+        console.log(event.task)
+        setSections((prevSections) =>
+          prevSections.map((section) => {
+            if (section.section.id === event.task.section_id) {
+              const updatedTasks = section.tasks.some((t) => t.id === event.task.id)
+                ? section.tasks.map((t) => (t.id === event.task.id ? event.task : t))
+                : [...section.tasks, event.task]
+
+              return { ...section, tasks: updatedTasks }
+            }
+            return section
+          })
+        )
+      })
+
+      return () => {
+        echo.channel('tasks').stopListening('.task.updated')
+      }
+    }
+  }, [pusher])
+
   return (
     <tbody ref={containerRef}>
-      {sections.map((section) => (
+      {updatedSections.map((section) => (
         <React.Fragment key={section.section.id}>
           {/* Fila de encabezado de sección (colapsable) */}
           <tr
