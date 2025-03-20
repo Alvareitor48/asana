@@ -61,6 +61,10 @@ class HandleInertiaRequests extends Middleware
 					)->get()
 				)->toArray($request)
 				: [],
+			'pusher' => [
+				'key' => config('app.pusher_key'),
+				'cluster' => config('app.pusher_cluster'),
+			],
 		];
 	}
 }
