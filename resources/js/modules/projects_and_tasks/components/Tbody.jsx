@@ -26,11 +26,14 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
     sectionId && router.post(route('tasks.store', { project: projectId, section: sectionId }))
   }
 
+  const handleCreateSection = () => {
+    router.post(route('section.store', { project: projectId }), { name: 'section' })
+  }
+
   useEffect(() => {
     if (pusher) {
       const echo = initEcho(pusher)
       echo.channel('tasks').listen('.task.updated', (event) => {
-        console.log(event.task)
         setSections((prevSections) =>
           prevSections.map((section) => {
             if (section.section.id === event.task.section_id) {
@@ -45,8 +48,19 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
         )
       })
 
+      echo.channel('sections').listen('.section.updated', (event) => {
+        setSections((prevSections) =>
+          prevSections.some((s) => s.section.id === event.section.id)
+            ? prevSections.map((s) =>
+                s.section.id === event.section.id ? { ...s, section: event.section } : s
+              )
+            : [...prevSections, { section: event.section, tasks: [] }]
+        )
+      })
+
       return () => {
         echo.channel('tasks').stopListening('.task.updated')
+        echo.channel('sections').stopListening('.section.updated')
       }
     }
   }, [pusher])
@@ -108,7 +122,11 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
       {/* new section */}
       <tr className="border-b border-gray-700 hover:bg-gray-800">
         <td>
-          <CardNav name={'Añadir nueva sección'} className="hover:bg-gray-800 cursor-pointer">
+          <CardNav
+            name={'Añadir nueva sección'}
+            className="hover:bg-gray-800 cursor-pointer"
+            onClick={() => handleCreateSection()}
+          >
             <Add width="20" height="20" color="white" />
           </CardNav>
         </td>
