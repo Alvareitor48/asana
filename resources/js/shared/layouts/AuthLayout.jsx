@@ -1,5 +1,3 @@
-import InputLabel from '@/modules/auth/components/InputLabel'
-import TextInput from '@/modules/auth/components/TextInput'
 import CardNav from '@/shared/components/CardNav'
 import Header from '@/shared/components/Header'
 import NavBar from '@/shared/components/NavBar'
@@ -9,7 +7,7 @@ import Pen from '@/shared/icons/Pen'
 import { router, useForm, usePage } from '@inertiajs/react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useRef, useState } from 'react'
-import Modal from '../components/Modal'
+import { PorjectModal } from '../components/ProjectModal'
 import Add from '../icons/Add'
 import ArrowDown from '../icons/ArrowDown'
 
@@ -53,7 +51,7 @@ export default function AuthLayout({ children }) {
         />
         <AnimatePresence initial={false}>
           <NavBar isOpen={isNavBarOpen}>
-            <div className="flex h-fit w-full flex-col items-center justify-center gap-4 px-1 py-5">
+            <div className="flex h-fit w-full flex-col items-center justify-center gap-4 px-1 py-5 ">
               <CardNav
                 name={isNavBarOpen ? 'Inicio' : ''}
                 onClick={() => router.visit(route('home'))}
@@ -97,7 +95,7 @@ export default function AuthLayout({ children }) {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.3 }}
-                      className={`flex flex-col justify-start items-start w-full h-fit gap-4 px-4`}
+                      className={`flex flex-col justify-start items-start w-full h-[40%] gap-4 px-4 overflow-y-scroll scrollable-container`}
                     >
                       {projects.map((project) => (
                         <motion.div
@@ -106,7 +104,7 @@ export default function AuthLayout({ children }) {
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                           transition={{ duration: 0.3 }}
-                          className="text-white w-full h-fit hover:bg-white/30 cursor-pointer p-2 rounded-lg flex justify-start items-center gap-10"
+                          className="text-white w-full h-fit hover:bg-white/30 cursor-pointer p-2 rounded-lg flex justify-start items-center gap-2"
                         >
                           <div
                             className="w-5 h-5 rounded-md"
@@ -142,54 +140,15 @@ export default function AuthLayout({ children }) {
         </AnimatePresence>
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <div className="text-white flex flex-col justify-start items-start w-full">
-          <h2 className="self-center text-3xl">Nuevo Proyecto</h2>
-          {/* nombre tarea */}
-          <form onSubmit={handleSubmit} className="w-full h-fit">
-            <div className="flex justify-between items-center gap-10 my-5 w-full">
-              <InputLabel
-                className="text-white w-[100px]"
-                htmlFor="responsable"
-                value="Nombre del proyecto"
-              />
-              <TextInput
-                id="name"
-                type="text"
-                name="name"
-                value={data.name}
-                onChange={(e) => setData('name', e.target.value)}
-                className="name mt-1 block w-full text-white bg-slate-400/30"
-              />
-            </div>
-            {errors.name && <p className="text-red-500 text-center">{errors.name}</p>}
-            <div className="flex justify-between items-center gap-10 my-5 w-full">
-              <InputLabel
-                className="text-white w-[100px]"
-                htmlFor="responsable"
-                value="Descripción"
-              />
-              <TextInput
-                id="name"
-                type="text"
-                name="name"
-                value={data.description}
-                onChange={(e) => setData('description', e.target.value)}
-                className="name mt-1 block w-full text-white bg-slate-400/30"
-              />
-            </div>
-            {errors.description && (
-              <p className="text-red-500 text-center mb-3">{errors.description}</p>
-            )}
-            <button
-              disabled={processing}
-              className="mb-2 w-full bg-white text-black rounded-md px-4 py-1 transition-transform duration-200 hover:scale-105 active:scale-95"
-            >
-              {processing ? 'Creando...' : 'Crear'}
-            </button>
-          </form>
-        </div>
-      </Modal>
+      <PorjectModal
+        handleSubmit={handleSubmit}
+        setData={setData}
+        processing={processing}
+        closeModal={closeModal}
+        isModalOpen={isModalOpen}
+        data={data}
+        errors={errors}
+      />
     </>
   )
 }
