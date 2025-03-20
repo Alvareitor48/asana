@@ -53,13 +53,16 @@ export default function Home({ auth }) {
               <CardNav className="w-fit h-fit border border-white" name="Crear proyecto">
                 <Add width="25px" height="25px" color="red" />
               </CardNav>
-              {projects.map((project) => (
+              {projects.map((project, index) => (
                 <CardNav
-                  key={project.id}
+                  key={`project-${project.id}-${project.name}-${index}`}
                   className="w-fit h-fit border border-white"
                   name={project.name}
                 >
-                  <div className="w-5 h-5 rounded-md bg-blue-500" />
+                  <div
+                    className="w-5 h-5 rounded-md"
+                    style={{ backgroundColor: project.color_icon }}
+                  />
                 </CardNav>
               ))}
             </div>
