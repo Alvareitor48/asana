@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TaskUpdated;
 use App\Http\Resources\IndexProjectsResource;
 use App\Http\Resources\ResponsibleResource;
 use App\Http\Resources\TaskResource;
@@ -21,10 +22,11 @@ class TaskController extends Controller
 
 	public function store(Project $project, Section $section): RedirectResponse
 	{
-		Task::create([
+		$task = Task::create([
 			'title' => "Nueva tarea",
 			'section_id' => $section->id,
 		]);
+		broadcast(new TaskUpdated($task))->toOthers();
 		return redirect(route('project.show', $project));
 	}
 
