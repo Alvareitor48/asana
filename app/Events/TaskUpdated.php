@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -16,7 +17,7 @@ class TaskUpdated implements ShouldBroadcastNow
 
 	public function __construct(Task $task)
 	{
-		$this->task = $task;
+		$this->task = new TaskResource($task);
 	}
 
 	public function broadcastOn()
