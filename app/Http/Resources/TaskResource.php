@@ -17,7 +17,7 @@ class TaskResource extends JsonResource
 		return [
 			'id' => $this->id,
 			'title' => $this->title,
-			'assigned_to' => $this->assignedTo ? $this->assignedTo : null,
+			'assigned_to' => $this->assignedTo ? $this->assignedTo->id : null,
 			'due_date' => optional($this->due_date)->format('Y-m-d'),
 			'project' => new IndexProjectsResource(
 				$this->section->project
