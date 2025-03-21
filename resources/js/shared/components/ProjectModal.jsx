@@ -1,3 +1,4 @@
+import { colorOptions } from '@/lib/utils'
 import InputLabel from '@/modules/auth/components/InputLabel'
 import TextInput from '@/modules/auth/components/TextInput'
 import Modal from './Modal'
@@ -11,6 +12,12 @@ export const PorjectModal = ({
   handleSubmit,
   setData,
 }) => {
+  const handleColorChange = (e) => {
+    const selectedColor = e.target.value
+
+    setData('color_icon', selectedColor)
+  }
+
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
       <div className="text-white flex flex-col justify-start items-start w-full">
@@ -50,6 +57,34 @@ export const PorjectModal = ({
           </div>
           {errors.description && (
             <p className="text-red-500 text-center mb-3">{errors.description}</p>
+          )}
+
+          {/* color picker */}
+          <div className="flex justify-between items-center gap-10 my-5 w-full">
+            <label htmlFor="color_icon" className="text-white w-[100px]">
+              Color
+            </label>
+            <div className="relative w-full">
+              <input
+                id="color_icon"
+                name="color_icon"
+                type="color"
+                value={data.color_icon}
+                onChange={handleColorChange}
+                list="color-options"
+                className="name mt-1 block w-full text-white bg-slate-400/30"
+              />
+              <datalist id="color-options">
+                {colorOptions.map((color) => (
+                  <option key={color.value} value={color.value}>
+                    {color.label}
+                  </option>
+                ))}
+              </datalist>
+            </div>
+          </div>
+          {errors.color_icon && (
+            <p className="text-red-500 text-center mb-3">{errors.color_icon}</p>
           )}
           <button
             disabled={processing}
