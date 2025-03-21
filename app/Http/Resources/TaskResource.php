@@ -17,13 +17,14 @@ class TaskResource extends JsonResource
 		return [
 			'id' => $this->id,
 			'title' => $this->title,
-			'assigned_to' => $this->assignedTo ? new UserResource($this->assignedTo) : null,
-			'due_date' => $this->due_date,
+			'assigned_to' => $this->assignedTo ? $this->assignedTo : null,
+			'due_date' => optional($this->due_date)->format('Y-m-d'),
 			'project' => new IndexProjectsResource(
 				$this->section->project
 			),
 			'description' => $this->description,
 			'comments' => $this->comments ? CommentResource::collection($this->comments)->toArray($request) : null,
+			'section_id' => $this->section->id,
 		];
 	}
 }

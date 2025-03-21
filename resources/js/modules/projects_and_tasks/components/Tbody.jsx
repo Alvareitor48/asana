@@ -6,7 +6,7 @@ import Add from '@/shared/icons/Add'
 import ArrowDown from '@/shared/icons/ArrowDown'
 import ArrowUp from '@/shared/icons/ArrowUp'
 import { initEcho } from '@/utils/echo'
-import { router, usePage } from '@inertiajs/react'
+import { router, useForm, usePage } from '@inertiajs/react'
 import React, { useEffect, useRef, useState } from 'react'
 
 const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
@@ -15,12 +15,14 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
   const containerRef = useRef(null)
   const [selectedTask, setSelectedTask] = useState(null)
   const [updatedSections, setSections] = useState(sections)
+  const timeoutRef = useRef(null)
 
   const openModal = (task) => {
-    setIsModalOpen(true)
     setSelectedTask(task)
+    setIsModalOpen(true)
   }
   const closeModal = () => setIsModalOpen(false)
+  console.log(collaborators)
 
   const handleCreateTask = (sectionId) => {
     sectionId && router.post(route('tasks.store', { project: projectId, section: sectionId }))
@@ -29,6 +31,58 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
   const handleCreateSection = () => {
     router.post(route('section.store', { project: projectId }), { name: 'section' })
   }
+  useEffect(() => {
+    if (!selectedTask) return
+
+    setData({
+      title: selectedTask.title || '',
+      assigned_to: selectedTask.assigned_to ?? '',
+      due_date: selectedTask.due_date || '',
+      section_id: selectedTask.section_id || '',
+    })
+  }, [selectedTask])
+
+  const { data, setData, patch, processing, errors, reset } = useForm({
+    title: '',
+    assigned_to: '',
+    due_date: '',
+    section_id: '',
+  })
+
+  useEffect(() => {
+    if (!selectedTask) return
+    console.log(selectedTask)
+
+    const original = {
+      title: selectedTask.title || '',
+      assigned_to: selectedTask.assigned_to ?? '',
+      due_date: selectedTask.due_date || '',
+      section_id: selectedTask.section_id || '',
+    }
+
+    const hasChanged = Object.keys(original).some((key) => data[key] !== original[key])
+    if (!hasChanged) return
+
+    clearTimeout(timeoutRef.current)
+    timeoutRef.current = setTimeout(() => {
+      patch(
+        route('tasks.update', {
+          project: projectId,
+          task: selectedTask.id,
+        }),
+        {
+          preserveScroll: true,
+        }
+      )
+    }, 500)
+
+    return () => clearTimeout(timeoutRef.current)
+  }, [data, selectedTask?.id])
+
+  const reorderedSections = [
+    ...sections.filter((s) => s.section.id === data.section_id),
+    ...sections.filter((s) => s.section.id !== data.section_id),
+  ]
 
   useEffect(() => {
     if (pusher) {
@@ -36,14 +90,15 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
       echo.channel('tasks').listen('.task.updated', (event) => {
         setSections((prevSections) =>
           prevSections.map((section) => {
-            if (section.section.id === event.task.section_id) {
-              const updatedTasks = section.tasks.some((t) => t.id === event.task.id)
-                ? section.tasks.map((t) => (t.id === event.task.id ? event.task : t))
-                : [...section.tasks, event.task]
+            const isTargetSection = section.section.id === event.task.section_id
 
-              return { ...section, tasks: updatedTasks }
+            // Filtra la tarea en todas las secciones
+            const filteredTasks = section.tasks.filter((t) => t.id !== event.task.id)
+
+            return {
+              ...section,
+              tasks: isTargetSection ? [...filteredTasks, event.task] : filteredTasks,
             }
-            return section
           })
         )
       })
@@ -132,17 +187,26 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
         </td>
       </tr>
 
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false)
+          setSelectedTask(null)
+          reset()
+        }}
+      >
         <div className="text-white flex flex-col justify-start items-start w-full">
           <h2 className="self-center text-3xl">Editar Tarea</h2>
           {/* nombre tarea */}
           <div className="flex justify-between items-center gap-10 my-5 w-full">
             <TextInput
-              id="name"
+              id="title"
               type="text"
-              name="password"
+              name="title"
               className="name mt-1 block w-full text-white bg-slate-400/30"
-              value={selectedTask?.title}
+              value={data.title}
+              onChange={(e) => setData('title', e.target.value)}
+              error={errors.title}
             />
           </div>
 
@@ -154,10 +218,15 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
               value="Responsable"
             />
             <select
-              id="responsable"
-              name="responsable"
+              id="assigned_to"
+              name="assigned_to"
+              value={data.assigned_to ?? ''}
+              onChange={(e) =>
+                setData('assigned_to', e.target.value === '' ? null : e.target.value)
+              }
               className="name mt-1 block w-full text-white bg-slate-400/30 rounded-md border-white/80"
             >
+              <option value="">Sin asignar</option>
               {collaborators.map((collaborator) => (
                 <option className="bg-gray-700" key={collaborator.id} value={collaborator.id}>
                   {collaborator.name} | {collaborator.email}
@@ -174,10 +243,12 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
               value="Fecha de entrega"
             />
             <TextInput
-              id="name"
+              id="due_date"
               type="date"
-              name="date"
+              name="due_date"
               className="name mt-1 block w-full text-white bg-slate-400/30"
+              value={data.due_date}
+              onChange={(e) => setData('due_date', e.target.value)}
             />
           </div>
 
@@ -185,11 +256,13 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
           <div className="flex justify-between items-center gap-10 my-5 w-full">
             <InputLabel className="text-white w-[100px]" htmlFor="section" value="Sección" />
             <select
-              id="section"
-              name="section"
+              id="section_id"
+              name="section_id"
+              value={data.section_id}
+              onChange={(e) => setData('section_id', e.target.value)}
               className="name mt-1 block w-full text-white bg-slate-400/30 rounded-md border-white/80"
             >
-              {sections.map((section) => (
+              {reorderedSections.map((section) => (
                 <option className="bg-gray-700" key={section.section.id} value={section.section.id}>
                   {section.section.name}
                 </option>

@@ -46,7 +46,7 @@ class Task extends Model
 	/*  una tarea la realiza un usuario */
 	public function assignedTo(): BelongsTo
 	{
-		return $this->belongsTo(User::class);
+		return $this->belongsTo(User::class, 'assigned_to');
 	}
 
 	/*  una tarea tiene comentarios */

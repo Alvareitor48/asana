@@ -40,7 +40,28 @@ class TaskController extends Controller
 
 	public function update(Request $request, Project $project, Task $task)
 	{
-		// Actualizar una tarea
+		$data = $request->validate([
+			'title' => 'sometimes|required|string|max:255',
+			'assigned_to' => 'sometimes|nullable|exists:users,id',
+			'due_date' => 'sometimes|nullable|date',
+			'section_id' => 'sometimes|required|exists:sections,id',
+		]);
+		$task->update([
+			'title' => $data['title'],
+			'due_date' => $data['due_date'],
+			'section_id' => $data['section_id'],
+		]);
+		if ($data['assigned_to']) {
+			$task->assignedTo()->associate($data['assigned_to']);
+		} else {
+			$task->assignedTo()->dissociate();
+		}
+		$task->save();
+
+		$task->refresh()->load('assignedTo');
+		broadcast(new TaskUpdated($task));
+
+		return back();
 	}
 
 	public function responsibles(Project $project, Task $task): RedirectResponse
