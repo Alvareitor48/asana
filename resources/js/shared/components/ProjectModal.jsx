@@ -51,6 +51,22 @@ export const PorjectModal = ({
           {errors.description && (
             <p className="text-red-500 text-center mb-3">{errors.description}</p>
           )}
+
+          {/* color picker */}
+          <div className="flex justify-between items-center gap-10 my-5 w-full">
+            <InputLabel className="text-white w-[100px]" htmlFor="color_icon" value="Color" />
+            <TextInput
+              id="color_icon"
+              type="text"
+              name="color_icon"
+              value={data.color_icon}
+              onChange={(e) => setData('color_icon', e.target.value)}
+              className="name mt-1 block w-full text-white bg-slate-400/30"
+            />
+          </div>
+          {errors.color_icon && (
+            <p className="text-red-500 text-center mb-3">{errors.color_icon}</p>
+          )}
           <button
             disabled={processing}
             className="mb-2 w-full bg-white text-black rounded-md px-4 py-1 transition-transform duration-200 hover:scale-105 active:scale-95"

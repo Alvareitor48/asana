@@ -36,16 +36,23 @@ class ProjectController extends Controller
 		$request->validate([
 			'name' => 'required|string|max:255',
 			'description' => 'string|max:255|nullable',
+			'color_icon' => [
+				'required',
+				'regex:/^#([A-Fa-f0-9]{3}){1,2}$/',
+			]
 		], [
 			'name.required' => 'El nombre es obligatorio.',
 			'name.string' => 'El nombre debe ser una cadena de texto.',
 			'name.max' => 'El nombre no puede superar los 255 caracteres.',
 			'description.string' => 'La descripción debe ser una cadena de texto.',
 			'description.max' => 'La descripción no puede superar los 255 caracteres.',
+			'color_icon.required' => 'El campo de color del ícono es obligatorio.',
+			'color_icon.regex' => 'El código de color del ícono debe ser un valor hexadecimal válido, por ejemplo: #3B83BD.',
 		]);
 		$project = Project::create([
 			'name' => $request->name,
 			'description' => $request->description,
+			'color_icon' => $request->color_icon
 		]);
 		$project->users()->attach(auth()->id(), ['role' => 'owner']);
 		broadcast(new ProjectCreated($project))->toOthers();

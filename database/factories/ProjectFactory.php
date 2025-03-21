@@ -21,6 +21,7 @@ class ProjectFactory extends Factory
 		return [
 			'name' => $this->faker->name(),
 			'description' => $this->faker->sentence(),
+			'color_icon' => $this->faker->hexColor(),
 			'created_at' => now()->subDays(rand(1, 30))
 		];
 	}

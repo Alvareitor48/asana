@@ -25,6 +25,7 @@ export default function Home({ auth }) {
     }
   }, [pusher])
 
+
   return (
     <>
       <AuthLayout>
@@ -73,7 +74,7 @@ export default function Home({ auth }) {
                   className="w-fit h-fit border border-white"
                   name={project.name}
                 >
-                  <div className="w-5 h-5 rounded-md bg-blue-500" />
+                  <div className={`w-5 h-5 rounded-md bg-[${project.color_icon}]`} />
                 </CardNav>
               ))}
             </div>

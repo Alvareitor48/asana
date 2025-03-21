@@ -30,7 +30,6 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
     if (pusher) {
       const echo = initEcho(pusher)
       echo.channel('tasks').listen('.task.updated', (event) => {
-        console.log(event.task)
         setSections((prevSections) =>
           prevSections.map((section) => {
             if (section.section.id === event.task.section_id) {
