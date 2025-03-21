@@ -4,21 +4,24 @@ import NavBar from '@/shared/components/NavBar'
 import House from '@/shared/icons/House'
 import Notify from '@/shared/icons/Notify'
 import Pen from '@/shared/icons/Pen'
+import { initEcho } from '@/utils/echo'
 import { router, useForm, usePage } from '@inertiajs/react'
 import { AnimatePresence, motion } from 'motion/react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { PorjectModal } from '../components/ProjectModal'
 import Add from '../icons/Add'
 import ArrowDown from '../icons/ArrowDown'
 
 export default function AuthLayout({ children }) {
-  const { projects, my_tasks } = usePage().props
+  const { projects: initialProjects } = usePage().props
+  const [projects, setProjects] = useState(initialProjects)
   const user = usePage().props.auth.user
 
   const [isNavBarOpen, setIsNavBarOpen] = useState(true)
   const [dropProject, setDropProject] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const containerRef = useRef(null)
+  const { pusher } = usePage().props
 
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
@@ -37,6 +40,19 @@ export default function AuthLayout({ children }) {
       },
     })
   }
+
+  useEffect(() => {
+    if (pusher) {
+      const echo = initEcho(pusher)
+      echo.channel('projects').listen('.project.created', (event) => {
+        setProjects((prevProjects) => [...prevProjects, event.project])
+      })
+
+      return () => {
+        echo.channel('projects').stopListening('.project.created')
+      }
+    }
+  }, [pusher])
 
   return (
     <>
