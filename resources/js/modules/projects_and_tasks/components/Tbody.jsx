@@ -37,6 +37,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
       assigned_to: selectedTask.assigned_to ?? '',
       due_date: selectedTask.due_date || '',
       section_id: selectedTask.section_id || '',
+      description: selectedTask.description || '',
     })
   }, [selectedTask])
 
@@ -45,6 +46,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
     assigned_to: '',
     due_date: '',
     section_id: '',
+    description: '',
   })
 
   useEffect(() => {
@@ -55,6 +57,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
       assigned_to: selectedTask.assigned_to ?? '',
       due_date: selectedTask.due_date || '',
       section_id: selectedTask.section_id || '',
+      description: selectedTask.description || '',
     }
 
     const hasChanged = Object.keys(original).some((key) => data[key] !== original[key])
@@ -206,6 +209,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
         errors={errors}
         collaborators={collaborators}
         setData={setData}
+        reset={reset}
       />
     </tbody>
   )

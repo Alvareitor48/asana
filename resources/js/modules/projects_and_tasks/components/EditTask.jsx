@@ -11,6 +11,7 @@ const EditTask = ({
   setSelectedTask,
   reorderedSections,
   setData,
+  reset,
 }) => {
   return (
     <Modal
@@ -88,6 +89,21 @@ const EditTask = ({
               </option>
             ))}
           </select>
+        </div>
+
+        {/* description  */}
+        <div className="flex justify-between items-center gap-10 my-5  w-full">
+          <InputLabel className="text-white w-[100px]" htmlFor="description" value="description" />
+          <textarea
+            id="description"
+            name="description"
+            rows="5"
+            cols="33"
+            className="name mt-1 block w-full text-white bg-slate-400/30 h-[100px]"
+            value={data.description}
+            onChange={(e) => setData('description', e.target.value)}
+            aria-invalid={errors.description ? 'true' : 'false'}
+          />
         </div>
       </div>
     </Modal>
