@@ -25,6 +25,7 @@ export default function Home({ auth }) {
     }
   }, [pusher])
 
+  console.log(projects[0].color_icon)
 
   return (
     <>
@@ -69,13 +70,14 @@ export default function Home({ auth }) {
                 <Add width="25px" height="25px" color="red" />
               </CardNav>
               {projects.map((project) => (
-                <CardNav
-                  key={project.id}
-                  className="w-fit h-fit border border-white"
-                  name={project.name}
-                >
-                  <div className={`w-5 h-5 rounded-md bg-[${project.color_icon}]`} />
-                </CardNav>
+                <a key={project.id} href={`/projects/${project.id}`}>
+                  <CardNav className="w-fit h-fit border border-white" name={project.name}>
+                    <div
+                      className="w-5 h-5 rounded-md"
+                      style={{ backgroundColor: project.color_icon }}
+                    />
+                  </CardNav>
+                </a>
               ))}
             </div>
           </GlassCard>
