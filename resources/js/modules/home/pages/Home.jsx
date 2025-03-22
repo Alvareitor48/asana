@@ -25,8 +25,6 @@ export default function Home({ auth }) {
     }
   }, [pusher])
 
-  console.log(projects[0].color_icon)
-
   return (
     <>
       <AuthLayout>

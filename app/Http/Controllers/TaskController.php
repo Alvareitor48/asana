@@ -45,11 +45,13 @@ class TaskController extends Controller
 			'assigned_to' => 'sometimes|nullable|exists:users,id',
 			'due_date' => 'sometimes|nullable|date',
 			'section_id' => 'sometimes|required|exists:sections,id',
+			'description' =>  'sometimes|string|max:500',
 		]);
 		$task->update([
 			'title' => $data['title'],
 			'due_date' => $data['due_date'],
 			'section_id' => $data['section_id'],
+			'description' => $data['description'],
 		]);
 		if ($data['assigned_to']) {
 			$task->assignedTo()->associate($data['assigned_to']);
