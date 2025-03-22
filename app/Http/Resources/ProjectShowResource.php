@@ -24,8 +24,9 @@ class ProjectShowResource extends JsonResource
 				'title' => $task->title,
 				'description' => $task->description,
 				'status' => $task->status,
-				'due_date' => $task->due_date,
-				'assigned_to' => $task->assignedTo ? new UserResource($task->assignedTo) : null,
+				'due_date' => optional($task->due_date)->format('Y-m-d'),
+				'assigned_to' => $task->assignedTo ? $task->assignedTo->id : null,
+				'section_id' => $task->section->id,
 			])->toArray(),
 		];
 	}
