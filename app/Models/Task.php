@@ -61,4 +61,9 @@ class Task extends Model
 		return $this->belongsToMany(Filter::class, 'task_filters')
 			->withPivot(['id', 'value']);
 	}
+
+	public function filterValues(): HasMany
+	{
+		return $this->hasMany(TaskFilter::class);
+	}
 }

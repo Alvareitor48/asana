@@ -14,7 +14,7 @@ return new class extends Migration
 		Schema::create('task_filters', function (Blueprint $table) {
 			$table->foreignId('task_id')->references('id')->on('tasks')->onDelete('cascade');
 			$table->foreignId('filter_id')->references('id')->on('filters')->onDelete('cascade');
-			$table->text('value');
+			$table->json('value')->nullable();
 			$table->primary(['task_id', 'filter_id']);
 			$table->timestamps();
 		});
