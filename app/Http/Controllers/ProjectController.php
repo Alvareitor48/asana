@@ -55,7 +55,8 @@ class ProjectController extends Controller
 			'color_icon' => $request->color_icon
 		]);
 		$project->users()->attach(auth()->id(), ['role' => 'owner']);
-		broadcast(new ProjectCreated($project))->toOthers();
+		$project->load('users');
+		broadcast(new ProjectCreated($project));
 		return redirect(route('project.show', $project));
 	}
 
