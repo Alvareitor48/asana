@@ -13,8 +13,10 @@ return new class extends Migration
 	{
 		Schema::create('filters', function (Blueprint $table) {
 			$table->id();
+			$table->string('name');
 			$table->foreignId('project_id')->references('id')->on('projects')->onDelete('cascade');
 			$table->string('type');
+			$table->json('options')->nullable();
 			$table->timestamps();
 		});
 	}

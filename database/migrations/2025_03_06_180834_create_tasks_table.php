@@ -17,7 +17,6 @@ return new class extends Migration
 			$table->text('description')->nullable();
 			$table->foreignId('assigned_to')->nullable()->constrained('users')->onDelete('cascade');
 			$table->foreignId('section_id')->references('id')->on('sections')->onDelete('cascade');
-			$table->jsonb('attachment')->nullable();
 			$table->boolean('status')->default(false);
 			$table->timestamp('due_date')->nullable();
 			$table->timestamps();

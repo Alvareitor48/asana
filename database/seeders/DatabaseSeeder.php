@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
 			ProjectSeeder::class,
 			TaskSeeder::class,
 			CommentSeeder::class,
+			FilterSeeder::class,
 		]);
 	}
 }
