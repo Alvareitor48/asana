@@ -61,6 +61,13 @@ class HandleInertiaRequests extends Middleware
 					)->get()
 				)->toArray($request)
 				: [],
+			'is_project_owner' => auth()->check() && request()->route('project')
+				? request()->route('project')
+				->users()
+				->where('user_id', auth()->id())
+				->wherePivot('role', 'owner')
+				->exists()
+				: false,
 			'pusher' => [
 				'key' => config('app.pusher_key'),
 				'cluster' => config('app.pusher_cluster'),

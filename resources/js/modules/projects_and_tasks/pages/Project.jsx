@@ -1,11 +1,12 @@
 import AuthLayout from '@/shared/layouts/AuthLayout'
-import { router } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import { useRef, useState } from 'react'
 import { DeleteProjectModal } from '../components/DeleteProjectModal'
 import Tbody from '../components/Tbody'
 import Thead from '../components/Thead'
 
 export default function Project({ project, sections: sec }) {
+  const { is_project_owner } = usePage().props
   const [collapsedSections, setCollapsedSections] = useState(() => {
     const initialState = []
 
@@ -29,13 +30,17 @@ export default function Project({ project, sections: sec }) {
   }
 
   const handleSubmit = (projectId) => {
-    router.delete(route('project.destroy', { id: projectId }), {
-      onSuccess: () => {
-        setIsModalOpen(false)
-      },
-    })
+    is_project_owner &&
+      router.delete(route('project.destroy', { id: projectId }), {
+        onSuccess: () => {
+          setIsModalOpen(false)
+        },
+        onError: () => {
+          setIsModalOpen(false)
+        },
+      })
   }
-
+  console.log(is_project_owner)
   return (
     <>
       <AuthLayout>
@@ -48,7 +53,7 @@ export default function Project({ project, sections: sec }) {
             <div className="flex items-center gap-3">
               <div className="w-5 h-5 rounded-md" style={{ backgroundColor: project.color_icon }} />
               <h1 className="text-xl font-bold text-white">{project.name}</h1>
-              <button onClick={openModal}>❌</button>
+              {is_project_owner && <button onClick={openModal}>❌</button>}
             </div>
           </div>
 
@@ -66,13 +71,15 @@ export default function Project({ project, sections: sec }) {
           </div>
         </div>
       </AuthLayout>
-      <DeleteProjectModal
-        isModalOpen={isModalOpen}
-        openModal={openModal}
-        closeModal={closeModal}
-        project={project}
-        handleSubmit={handleSubmit}
-      />
+      {is_project_owner && (
+        <DeleteProjectModal
+          isModalOpen={isModalOpen}
+          openModal={openModal}
+          closeModal={closeModal}
+          project={project}
+          handleSubmit={handleSubmit}
+        />
+      )}
     </>
   )
 }
