@@ -1,13 +1,12 @@
-import InputLabel from '@/modules/auth/components/InputLabel'
-import TextInput from '@/modules/auth/components/TextInput'
+import { monthName } from '@/lib/utils'
 import CardNav from '@/shared/components/CardNav'
-import Modal from '@/shared/components/Modal'
 import Add from '@/shared/icons/Add'
 import ArrowDown from '@/shared/icons/ArrowDown'
 import ArrowUp from '@/shared/icons/ArrowUp'
 import { initEcho } from '@/utils/echo'
 import { router, useForm, usePage } from '@inertiajs/react'
 import React, { useEffect, useRef, useState } from 'react'
+import EditTask from './EditTask'
 
 const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
   const { collaborators, pusher } = usePage().props
@@ -22,7 +21,6 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
     setIsModalOpen(true)
   }
   const closeModal = () => setIsModalOpen(false)
-  console.log(collaborators)
 
   const handleCreateTask = (sectionId) => {
     sectionId && router.post(route('tasks.store', { project: projectId, section: sectionId }))
@@ -39,6 +37,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
       assigned_to: selectedTask.assigned_to ?? '',
       due_date: selectedTask.due_date || '',
       section_id: selectedTask.section_id || '',
+      description: selectedTask.description || '',
     })
   }, [selectedTask])
 
@@ -47,17 +46,18 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
     assigned_to: '',
     due_date: '',
     section_id: '',
+    description: '',
   })
 
   useEffect(() => {
     if (!selectedTask) return
-    console.log(selectedTask)
 
     const original = {
       title: selectedTask.title || '',
       assigned_to: selectedTask.assigned_to ?? '',
       due_date: selectedTask.due_date || '',
       section_id: selectedTask.section_id || '',
+      description: selectedTask.description || '',
     }
 
     const hasChanged = Object.keys(original).some((key) => data[key] !== original[key])
@@ -142,24 +142,37 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
 
           {/* Filas de tareas (visibles cuando la sección no está colapsada) */}
           {!collapsedSections[section.section.name] &&
-            section.tasks.map((task) => (
-              <tr key={task.id} className="border-b border-gray-700 hover:bg-gray-800">
-                <td className="px-4 py-2 pl-10 text-gray-300 flex items-center cursor-pointer">
-                  <div className="w-5 h-5 rounded-full border border-gray-400 flex items-center justify-center mr-2">
-                    {!!task.status && '✔'}
-                  </div>
-                  <span onClick={() => openModal(task)}>{task.title}</span>
-                </td>
-                <td className="px-4 py-2">
-                  <div className="w-8 h-8 rounded-full bg-purple-700 flex items-center justify-center text-white">
-                    <span>A</span>
-                  </div>
-                </td>
-                <td className="px-4 py-2">
-                  <div className="w-6 h-6 rounded-full border border-gray-400"></div>
-                </td>
-              </tr>
-            ))}
+            section.tasks.map((task) => {
+              const firstLetter = collaborators.find((owner) => owner.id === task.assigned_to)
+
+              const dueDate = task.due_date ? new Date(task.due_date) : null
+              const dayAndMonth = dueDate
+                ? `${dueDate.getDate()} de ${monthName(dueDate.getMonth() + 1)}`
+                : ''
+
+              return (
+                <tr key={task.id} className="border-b border-gray-700 hover:bg-gray-800">
+                  <td className="px-4 py-2 pl-10 text-gray-300 flex items-center cursor-pointer">
+                    <div className="w-5 h-5 rounded-full border border-gray-400 flex items-center justify-center mr-2">
+                      {!!task.status && '✔'}
+                    </div>
+                    <span onClick={() => openModal(task)}>{task.title}</span>
+                  </td>
+                  <td className="px-4 py-2">
+                    <div className="w-8 h-8 rounded-full bg-blue-900/70 flex items-center justify-center text-white">
+                      <span>{firstLetter?.name?.charAt(0) ?? ''}</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-2 text-sm">
+                    {dayAndMonth ? (
+                      <span>{dayAndMonth}</span>
+                    ) : (
+                      <div className="w-8 h-8 border rounded-full border-white/40" />
+                    )}
+                  </td>
+                </tr>
+              )
+            })}
 
           {/* Fila para agregar tarea (visible cuando la sección no está colapsada) */}
           {!collapsedSections[section.section.name] && (
@@ -187,90 +200,17 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
         </td>
       </tr>
 
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false)
-          setSelectedTask(null)
-          reset()
-        }}
-      >
-        <div className="text-white flex flex-col justify-start items-start w-full">
-          <h2 className="self-center text-3xl">Editar Tarea</h2>
-          {/* nombre tarea */}
-          <div className="flex justify-between items-center gap-10 my-5 w-full">
-            <TextInput
-              id="title"
-              type="text"
-              name="title"
-              className="name mt-1 block w-full text-white bg-slate-400/30"
-              value={data.title}
-              onChange={(e) => setData('title', e.target.value)}
-              error={errors.title}
-            />
-          </div>
-
-          {/* responsable */}
-          <div className="flex justify-between items-center gap-10 my-5 w-full">
-            <InputLabel
-              className="text-white w-[100px]"
-              htmlFor="responsable"
-              value="Responsable"
-            />
-            <select
-              id="assigned_to"
-              name="assigned_to"
-              value={data.assigned_to ?? ''}
-              onChange={(e) =>
-                setData('assigned_to', e.target.value === '' ? null : e.target.value)
-              }
-              className="name mt-1 block w-full text-white bg-slate-400/30 rounded-md border-white/80"
-            >
-              <option value="">Sin asignar</option>
-              {collaborators.map((collaborator) => (
-                <option className="bg-gray-700" key={collaborator.id} value={collaborator.id}>
-                  {collaborator.name} | {collaborator.email}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* fecha entrga */}
-          <div className="flex justify-between items-center gap-10 my-5 w-full">
-            <InputLabel
-              className="text-white w-[100px]"
-              htmlFor="responsable"
-              value="Fecha de entrega"
-            />
-            <TextInput
-              id="due_date"
-              type="date"
-              name="due_date"
-              className="name mt-1 block w-full text-white bg-slate-400/30"
-              value={data.due_date}
-              onChange={(e) => setData('due_date', e.target.value)}
-            />
-          </div>
-
-          {/* secciones asignables */}
-          <div className="flex justify-between items-center gap-10 my-5 w-full">
-            <InputLabel className="text-white w-[100px]" htmlFor="section" value="Sección" />
-            <select
-              id="section_id"
-              name="section_id"
-              value={data.section_id}
-              onChange={(e) => setData('section_id', e.target.value)}
-              className="name mt-1 block w-full text-white bg-slate-400/30 rounded-md border-white/80"
-            >
-              {reorderedSections.map((section) => (
-                <option className="bg-gray-700" key={section.section.id} value={section.section.id}>
-                  {section.section.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </Modal>
+      <EditTask
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        setSelectedTask={setSelectedTask}
+        reorderedSections={reorderedSections}
+        data={data}
+        errors={errors}
+        collaborators={collaborators}
+        setData={setData}
+        reset={reset}
+      />
     </tbody>
   )
 }
