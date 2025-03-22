@@ -58,4 +58,21 @@ class ProjectController extends Controller
 		broadcast(new ProjectCreated($project))->toOthers();
 		return redirect(route('project.show', $project));
 	}
+
+	public function destroy(Project $project): RedirectResponse
+	{
+		// Verificar si el usuario autenticado es el propietario del proyecto
+		$userId = auth()->id();
+		$isOwner = $project->users()->where('user_id', $userId)->where('role', 'owner')->exists();
+
+		if (!$isOwner) {
+			// Si el usuario no es el propietario, redirigir con un mensaje de error
+			return redirect()->route('project.show', ['project' => $project])->withErrors('No tienes permiso para eliminar este proyecto.');
+		}
+
+		// Eliminar el proyecto
+		$project->delete();
+		// Redirigir a la lista de proyectos con un mensaje de éxito
+		return redirect()->route('home')->with('success', 'Proyecto eliminado correctamente.');
+	}
 }

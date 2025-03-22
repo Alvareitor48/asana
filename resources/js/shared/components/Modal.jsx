@@ -29,7 +29,7 @@ const Modal = ({ isOpen, onClose, children }) => {
         {/* Contenedor del Modal */}
         <motion.div
           ref={modalRef}
-          className="relative z-50 flex max-w-[50%] flex-1 flex-col items-center justify-center gap-4 overflow-hidden rounded-xl border border-transparent bg-black/90 p-6 shadow-lg"
+          className="relative z-50 flex max-w-[90%] lg:max-w-[50%] flex-1 flex-col items-center justify-center gap-4 overflow-hidden rounded-xl border border-transparent bg-black/90 p-6 shadow-lg"
           initial={{ opacity: 0, scale: 0.5, rotateX: 40, y: 40 }}
           animate={{ opacity: 1, scale: 1, rotateX: 0, y: 0 }}
           exit={{ opacity: 0, scale: 0.8, rotateX: 10 }}

@@ -24,6 +24,8 @@ Route::middleware('auth')->group(function () {
 		->name('project.show');
 	Route::post('/projects', [ProjectController::class, 'store'])
 		->name('project.store');
+	Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])
+		->name('project.destroy');
 	Route::get('/projects/{project}/tasks/{task}', [TaskController::class, 'show'])
 		->name('tasks.show');
 	Route::post('/projects/{project}/{section}/tasks', [TaskController::class, 'store'])
