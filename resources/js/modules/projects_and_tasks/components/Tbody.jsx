@@ -1,3 +1,4 @@
+import { monthName } from '@/lib/utils'
 import CardNav from '@/shared/components/CardNav'
 import Add from '@/shared/icons/Add'
 import ArrowDown from '@/shared/icons/ArrowDown'
@@ -141,6 +142,11 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
             section.tasks.map((task) => {
               const firstLetter = collaborators.find((owner) => owner.id === task.assigned_to)
 
+              const dueDate = task.due_date ? new Date(task.due_date) : null
+              const dayAndMonth = dueDate
+                ? `${dueDate.getDate()} de ${monthName(dueDate.getMonth() + 1)}`
+                : ''
+
               return (
                 <tr key={task.id} className="border-b border-gray-700 hover:bg-gray-800">
                   <td className="px-4 py-2 pl-10 text-gray-300 flex items-center cursor-pointer">
@@ -154,8 +160,12 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
                       <span>{firstLetter?.name?.charAt(0) ?? ''}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-2">
-                    <div className="w-6 h-6 rounded-full border border-gray-400"></div>
+                  <td className="px-4 py-2 text-sm">
+                    {dayAndMonth ? (
+                      <span>{dayAndMonth}</span>
+                    ) : (
+                      <div className="w-8 h-8 border rounded-full border-white/40" />
+                    )}
                   </td>
                 </tr>
               )
