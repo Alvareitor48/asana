@@ -10,7 +10,7 @@ export default function Project({ project, sections: sec }) {
     const initialState = []
 
     sec.map((section) => {
-      initialState[section.section.name] = false
+      initialState[section.section.id] = false
     })
 
     return initialState
@@ -21,10 +21,10 @@ export default function Project({ project, sections: sec }) {
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
 
-  const toggleSection = (sectionName) => {
+  const toggleSection = (sectionId) => {
     setCollapsedSections({
       ...collapsedSections,
-      [sectionName]: !collapsedSections[sectionName],
+      [sectionId]: !collapsedSections[sectionId],
     })
   }
 
