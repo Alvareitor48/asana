@@ -34,15 +34,15 @@ export function AvatarDropdown({ name }) {
         <Avatar name={name} />
       </button>
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20">
+        <div className="absolute right-0 mt-2 w-48  container-glass rounded-md shadow-lg z-20 ">
           <div className="py-2">
-            <a href="/perfil" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+            <a href="#" className="block px-4 py-2 text-white hover:bg-gray-200/20">
               Ver detalles
             </a>
             <form onSubmit={handleLogout}>
               <button
                 type="submit"
-                className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200"
+                className="block w-full text-left px-4 py-2 text-white hover:bg-gray-200/20"
               >
                 Finalizar sesión
               </button>
