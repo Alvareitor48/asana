@@ -8,7 +8,7 @@ import { router, useForm, usePage } from '@inertiajs/react'
 import React, { useEffect, useRef, useState } from 'react'
 import EditTask from './EditTask'
 
-const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
+const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters }) => {
   const { collaborators, pusher } = usePage().props
   const [isModalOpen, setIsModalOpen] = useState(false)
   const containerRef = useRef(null)
@@ -129,7 +129,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
             className="bg-gray-800 border-b border-gray-700 cursor-pointer hover:bg-gray-700"
             onClick={() => toggleSection(section.section.id)}
           >
-            <td className="px-4 py-2 font-semibold flex items-center text-white">
+            <td className="px-2 py-2 font-semibold flex items-center text-white">
               {collapsedSections[section.section.id] ? (
                 <ArrowUp height="25px" width="25px" color="white" />
               ) : (
@@ -137,7 +137,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
               )}
               <span>{section.section.name} 🔥</span>
             </td>
-            <td colSpan={4}></td>
+            <td colSpan={filters.length + 3}></td>
           </tr>
 
           {/* Filas de tareas (visibles cuando la sección no está colapsada) */}
@@ -152,24 +152,31 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
 
               return (
                 <tr key={task.id} className="border-b border-gray-700 hover:bg-gray-800">
-                  <td className="px-4 py-2 pl-10 text-gray-300 flex items-center cursor-pointer">
+                  <td className="px-2 py-2 pl-10 text-gray-300 flex items-center cursor-pointer">
                     <div className="w-5 h-5 rounded-full border border-gray-400 flex items-center justify-center mr-2">
                       {!!task.status && '✔'}
                     </div>
                     <span onClick={() => openModal(task)}>{task.title}</span>
                   </td>
-                  <td className="px-4 py-2">
+                  <td className="px-2 py-2">
                     <div className="w-8 h-8 rounded-full bg-blue-900/70 flex items-center justify-center text-white">
                       <span>{firstLetter?.name?.charAt(0) ?? ''}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-2 text-sm">
+                  <td className="px-2 py-2 text-sm">
                     {dayAndMonth ? (
                       <span>{dayAndMonth}</span>
                     ) : (
                       <div className="w-8 h-8 border rounded-full border-white/40" />
                     )}
                   </td>
+                  {task.filters.map((filter) => (
+                    <td className="px-2 py-2">
+                      <div className="w-full flex h-full p-2  line-clamp-1   items-center justify-center text-white">
+                        <span>{filter.value}</span>
+                      </div>
+                    </td>
+                  ))}
                 </tr>
               )
             })}
@@ -180,7 +187,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId }) => {
               className="border-b border-gray-700 text-gray-400  hover:bg-gray-800 cursor-pointer"
               onClick={() => handleCreateTask(section.section.id)}
             >
-              <td className="px-4 py-2 pl-10">Agegar Tarea...</td>
+              <td className="px-2 py-2 pl-10">Agegar Tarea...</td>
               <td colSpan={4}></td>
             </tr>
           )}

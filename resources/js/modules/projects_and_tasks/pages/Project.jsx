@@ -6,7 +6,7 @@ import Tbody from '../components/Tbody'
 import Thead from '../components/Thead'
 
 export default function Project({ project, sections: sec }) {
-  const { is_project_owner } = usePage().props
+  const { is_project_owner, filters } = usePage().props
   const [collapsedSections, setCollapsedSections] = useState(() => {
     const initialState = []
 
@@ -40,6 +40,9 @@ export default function Project({ project, sections: sec }) {
         },
       })
   }
+
+  console.log(sec)
+
   return (
     <>
       <AuthLayout>
@@ -54,13 +57,17 @@ export default function Project({ project, sections: sec }) {
               <h1 className="text-xl font-bold text-white">{project.name}</h1>
               {is_project_owner && <button onClick={openModal}>❌</button>}
             </div>
+            <button className="my-2 w-fit bg-white/60 text-black rounded-md px-4 py-1 transition-transform duration-200 hover:scale-105 active:scale-95">
+              Añadir Filtro
+            </button>
           </div>
 
           {/* body */}
-          <div className="overflow-x-auto w-full h-full p-3 bg-black/60">
+          <div className="overflow-x-scroll w-full h-full p-3 bg-black/60">
             <table className="w-full border-collapse">
-              <Thead />
+              <Thead filters={filters} />
               <Tbody
+                filters={filters}
                 sections={sec}
                 toggleSection={toggleSection}
                 collapsedSections={collapsedSections}
