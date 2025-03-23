@@ -1,4 +1,4 @@
-import Avatar from '../../Components/Avatar'
+import { AvatarDropdown } from '@/shared/components/AvatarDropdown'
 import List from '../icons/List'
 
 const Header = ({ toggleNavbar, name, className = '' }) => {
@@ -9,7 +9,7 @@ const Header = ({ toggleNavbar, name, className = '' }) => {
       <button onClick={toggleNavbar}>
         <List height={35} width={35} color="white" />
       </button>
-      <Avatar name={name} />
+      <AvatarDropdown name={name} />
     </header>
   )
 }
