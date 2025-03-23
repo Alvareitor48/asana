@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Resources\FilterResource;
 use App\Http\Resources\IndexProjectsResource;
 use App\Http\Resources\UserResource;
 use App\Models\Project;
@@ -68,6 +69,11 @@ class HandleInertiaRequests extends Middleware
 				->wherePivot('role', 'owner')
 				->exists()
 				: false,
+			'filters' => auth()->check() && request()->route('project')
+				? FilterResource::collection(
+					request()->route('project')->filters()->get()
+				)->toArray($request)
+				: [],
 			'pusher' => [
 				'key' => config('app.pusher_key'),
 				'cluster' => config('app.pusher_cluster'),
