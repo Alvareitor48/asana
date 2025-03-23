@@ -82,5 +82,15 @@ class FilterSeeder extends Seeder
 				'value' => $data['value'],
 			]);
 		}
+
+		$projectFilters = $project->filters;
+
+		$project->tasks()->each(function ($task) use ($projectFilters) {
+			foreach ($projectFilters as $filter) {
+				if (!$task->filters()->where('filter_id', $filter->id)->exists()) {
+					$task->filters()->attach($filter->id, ['value' => null]);
+				}
+			}
+		});
 	}
 }

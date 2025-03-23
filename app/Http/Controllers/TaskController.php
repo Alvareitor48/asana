@@ -26,6 +26,11 @@ class TaskController extends Controller
 			'title' => "Nueva tarea",
 			'section_id' => $section->id,
 		]);
+		$filters = $project->filters;
+
+		foreach ($filters as $filter) {
+			$task->filters()->attach($filter->id, ['value' => null]);
+		}
 		broadcast(new TaskUpdated($task));
 		return redirect(route('project.show', $project));
 	}
