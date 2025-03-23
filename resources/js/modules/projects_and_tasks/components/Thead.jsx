@@ -1,6 +1,4 @@
 const Thead = ({ filters }) => {
-  console.log(filters)
-
   return (
     <thead>
       <tr className="text-left text-gray-400 border-b border-gray-700">

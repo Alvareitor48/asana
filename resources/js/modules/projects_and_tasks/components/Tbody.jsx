@@ -1,3 +1,4 @@
+import { formatFilterValue } from '@/lib/filterDetail'
 import { monthName } from '@/lib/utils'
 import CardNav from '@/shared/components/CardNav'
 import Add from '@/shared/icons/Add'
@@ -173,7 +174,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
                   {task.filters.map((filter) => (
                     <td className="px-2 py-2">
                       <div className="w-full flex h-full p-2  line-clamp-1   items-center justify-center text-white">
-                        <span>{filter.value}</span>
+                        {formatFilterValue(filter, collaborators)}
                       </div>
                     </td>
                   ))}
