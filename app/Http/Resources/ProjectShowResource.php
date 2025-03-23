@@ -27,6 +27,10 @@ class ProjectShowResource extends JsonResource
 				'due_date' => optional($task->due_date)->format('Y-m-d'),
 				'assigned_to' => $task->assignedTo ? $task->assignedTo->id : null,
 				'section_id' => $task->section->id,
+				'filters' => $task->filters->map(fn($filter) => [
+					'filter_id' => $filter->id,
+					'value' => $filter->pivot->value,
+				]),
 			])->toArray(),
 		];
 	}

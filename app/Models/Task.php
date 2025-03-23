@@ -59,7 +59,7 @@ class Task extends Model
 	public function filters(): BelongsToMany
 	{
 		return $this->belongsToMany(Filter::class, 'task_filters')
-			->withPivot(['id', 'value']);
+			->withPivot(['value']);
 	}
 
 	public function filterValues(): HasMany
