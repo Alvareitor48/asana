@@ -1,3 +1,4 @@
+import { formatFilterValue } from '@/lib/filterDetail'
 import { monthName } from '@/lib/utils'
 import CardNav from '@/shared/components/CardNav'
 import Add from '@/shared/icons/Add'
@@ -137,7 +138,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
               )}
               <span>{section.section.name} 🔥</span>
             </td>
-            <td colSpan={filters.length + 3}></td>
+            <td colSpan={filters?.length + 3}></td>
           </tr>
 
           {/* Filas de tareas (visibles cuando la sección no está colapsada) */}
@@ -170,10 +171,10 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
                       <div className="w-8 h-8 border rounded-full border-white/40" />
                     )}
                   </td>
-                  {task.filters.map((filter) => (
+                  {task?.filters?.map((filter) => (
                     <td className="px-2 py-2">
                       <div className="w-full flex h-full p-2  line-clamp-1   items-center justify-center text-white">
-                        <span>{filter.value}</span>
+                        {formatFilterValue(filter, collaborators)}
                       </div>
                     </td>
                   ))}
