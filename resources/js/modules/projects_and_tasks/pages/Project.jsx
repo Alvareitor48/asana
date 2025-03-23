@@ -40,7 +40,6 @@ export default function Project({ project, sections: sec }) {
         },
       })
   }
-  console.log(is_project_owner)
   return (
     <>
       <AuthLayout>

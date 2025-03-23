@@ -28,6 +28,7 @@ export default function AuthLayout({ children }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
     description: '',
+    color_icon: '#000',
   })
 
   const handleSubmit = (e) => {
@@ -44,9 +45,7 @@ export default function AuthLayout({ children }) {
     if (!pusher || !user) return
     const echo = initEcho(pusher)
     const channel = echo.private(`projects.${user.id}`)
-    console.log(channel)
     channel.listen('.project.created', (event) => {
-      console.log(event)
       setProjects((prevProjects) => [...prevProjects, event.project])
     })
 
