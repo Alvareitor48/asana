@@ -5,6 +5,7 @@ namespace App\Events;
 use App\Models\Project;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Queue\SerializesModels;
 
@@ -19,9 +20,12 @@ class ProjectCreated implements ShouldBroadcastNow
 		$this->project = $project;
 	}
 
-	public function broadcastOn()
+	public function broadcastOn(): array
 	{
-		return new Channel('projects'); // Canal donde se enviará el evento
+		return $this->project
+			->users // Asegúrate de que esté cargado o usa $this->project->loadMissing('users')
+			->map(fn($user) => new PrivateChannel('projects.' . $user->id))
+			->toArray();
 	}
 
 	public function broadcastAs()

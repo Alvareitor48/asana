@@ -13,7 +13,7 @@ import Add from '../icons/Add'
 import ArrowDown from '../icons/ArrowDown'
 
 export default function AuthLayout({ children }) {
-  const { projects: initialProjects } = usePage().props
+  const { projects: initialProjects, pusher } = usePage().props
   const [projects, setProjects] = useState(initialProjects)
   const user = usePage().props.auth.user
 
@@ -21,7 +21,6 @@ export default function AuthLayout({ children }) {
   const [dropProject, setDropProject] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const containerRef = useRef(null)
-  const { pusher } = usePage().props
 
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
@@ -42,15 +41,18 @@ export default function AuthLayout({ children }) {
   }
 
   useEffect(() => {
-    if (pusher) {
-      const echo = initEcho(pusher)
-      echo.channel('projects').listen('.project.created', (event) => {
-        setProjects((prevProjects) => [...prevProjects, event.project])
-      })
+    if (!pusher || !user) return
+    const echo = initEcho(pusher)
+    const channel = echo.private(`projects.${user.id}`)
+    console.log(channel)
+    channel.listen('.project.created', (event) => {
+      console.log(event)
+      setProjects((prevProjects) => [...prevProjects, event.project])
+    })
 
-      return () => {
-        echo.channel('projects').stopListening('.project.created')
-      }
+    return () => {
+      channel.stopListening('.project.created')
+      echo.leave(`private-projects.${user.id}`)
     }
   }, [pusher])
 
