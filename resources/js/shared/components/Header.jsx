@@ -1,4 +1,4 @@
-import { AvatarDropdown } from '@/Components/AvatarDropDown'
+import { AvatarDropdown } from '@/shared/components/AvatarDropdown'
 import List from '../icons/List'
 
 const Header = ({ toggleNavbar, name, className = '' }) => {

@@ -1,4 +1,4 @@
-import Avatar from '@/Components/Avatar'
+import Avatar from '@/shared/components/Avatar'
 import CardNav from '@/shared/components/CardNav'
 import GlassCard from '@/shared/components/GlassCard'
 import Add from '@/shared/icons/Add'
