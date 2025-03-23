@@ -9,6 +9,7 @@ use App\Http\Resources\TaskResource;
 use App\Models\Project;
 use App\Models\Section;
 use App\Models\Task;
+use App\Models\TaskFilter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -50,7 +51,7 @@ class TaskController extends Controller
 			'assigned_to' => 'sometimes|nullable|exists:users,id',
 			'due_date' => 'sometimes|nullable|date',
 			'section_id' => 'sometimes|required|exists:sections,id',
-			'description' =>  'sometimes|string|max:500',
+			'description' =>  'sometimes|nullable|string|max:500',
 		]);
 		$task->update([
 			'title' => $data['title'],
@@ -64,6 +65,16 @@ class TaskController extends Controller
 			$task->assignedTo()->dissociate();
 		}
 		$task->save();
+		if ($request->has('filters')) {
+			foreach ($request->filters as $filterData) {
+				TaskFilter::query()
+					->where('task_id', $task->id)
+					->where('filter_id', $filterData['filter_id'])
+					->update([
+						'value' => json_encode($filterData['value']),
+					]);
+			}
+		}
 
 		$task->refresh()->load('assignedTo');
 		broadcast(new TaskUpdated($task));

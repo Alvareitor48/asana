@@ -39,6 +39,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
       due_date: selectedTask.due_date || '',
       section_id: selectedTask.section_id || '',
       description: selectedTask.description || '',
+      filters: selectedTask.filters || [],
     })
   }, [selectedTask])
 
@@ -48,6 +49,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
     due_date: '',
     section_id: '',
     description: '',
+    filters: [],
   })
 
   useEffect(() => {
@@ -59,6 +61,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
       due_date: selectedTask.due_date || '',
       section_id: selectedTask.section_id || '',
       description: selectedTask.description || '',
+      filters: selectedTask.filters || [],
     }
 
     const hasChanged = Object.keys(original).some((key) => data[key] !== original[key])
