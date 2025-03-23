@@ -1,10 +1,12 @@
 import { monthName } from './utils'
 
 export function formatFilterValue(task, collaborators) {
-  if (task.filter_type === 'seleccion_unica')
-    return <span className="w-fit h-fit px-1 py-1 rounded-lg bg-blue-500/80 ">{task.value}</span>
+  if (task.filter_type === 'seleccion_unica' && task.value)
+    return (
+      <span className="w-fit h-fit px-1 py-1 rounded-lg bg-blue-500/80 ">{task.value ?? ''}</span>
+    )
 
-  if (task.filter_type === 'seleccion_multiple') {
+  if (task.filter_type === 'seleccion_multiple' && task.value) {
     return (
       <div className="flex flex-wrap gap-4">
         {task.value.map((v) => (
@@ -14,14 +16,14 @@ export function formatFilterValue(task, collaborators) {
     )
   }
 
-  if (task.filter_type === 'fecha') {
+  if (task.filter_type === 'fecha' && task.value) {
     const dueDate = new Date(task.value)
     const dayAndMonth = `${dueDate.getDate()} de ${monthName(dueDate.getMonth() + 1)}`
 
     return <span className="w-fit h-fit px-1 py-1 rounded-lg">{dayAndMonth}</span>
   }
 
-  if (task.filter_type === 'persona') {
+  if (task.filter_type === 'persona' && task.value) {
     const person = collaborators.find((person) => person.id == task.value)
 
     return (
@@ -31,9 +33,11 @@ export function formatFilterValue(task, collaborators) {
     )
   }
 
-  if (task.filter_type === 'texto')
-    return <span className="w-fit h-fit px-1 py-1 rounded-lg">{task.value}</span>
+  if (task.filter_type === 'texto' && task.value)
+    return <span className="w-fit h-fit px-1 py-1 rounded-lg">{task.value ?? ''}</span>
 
-  if (task.filter_type === 'numero')
-    return <span className="w-fit h-fit px-1 py-1 rounded-lg line-clamp-1">{task.value}</span>
+  if (task.filter_type === 'numero' && task.value)
+    return <span className="w-fit h-fit px-1 py-1 rounded-lg line-clamp-1">{task.value ?? ''}</span>
+
+  return ''
 }
