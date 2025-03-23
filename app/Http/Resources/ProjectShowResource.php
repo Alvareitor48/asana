@@ -29,6 +29,8 @@ class ProjectShowResource extends JsonResource
 				'section_id' => $task->section->id,
 				'filters' => $task->filters->map(fn($filter) => [
 					'filter_id' => $filter->id,
+					'filter_name' => $filter->name,
+					'filter_type' => $filter->type,
 					'value' => json_decode($filter->pivot->value, true),
 				]),
 			])->toArray(),
