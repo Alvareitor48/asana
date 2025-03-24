@@ -24,7 +24,7 @@ const EditTask = ({
         reset()
       }}
     >
-      <div className="text-white flex flex-col justify-start items-start w-full">
+      <div className="text-white flex flex-col justify-start items-start w-full h-[600px] overflow-y-scroll scrollbar-custom">
         <h2 className="self-center text-3xl">Editar Tarea</h2>
         {/* nombre tarea */}
         <div className="flex justify-between items-center gap-10 my-5 w-full">
@@ -224,8 +224,8 @@ const EditTask = ({
         </div>
 
         {/* description  */}
-        <div className="flex justify-between items-center gap-10 my-5  w-full">
-          <InputLabel className="text-white w-[100px]" htmlFor="description" value="description" />
+        <div className="flex flex-col justify-between items-center gap-3  my-5  w-full">
+          <InputLabel className="text-white w-[100px]" htmlFor="description" value="Descripción" />
           <textarea
             id="description"
             name="description"
