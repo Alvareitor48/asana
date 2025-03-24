@@ -37,12 +37,12 @@ class FilterSeeder extends Seeder
 		// Crear filtros y asociar valores
 		$filterData = [
 			[
-				'type' => 'seleccion_unica',
+				'type' => 'unica',
 				'value' => 'En progreso',
 				'options' => ['Por hacer', 'En progreso', 'Hecho'],
 			],
 			[
-				'type' => 'seleccion_multiple',
+				'type' => 'multiple',
 				'value' => ['Urgente', 'Importante'],
 				'options' => ['Urgente', 'Importante', 'Backend', 'Frontend'],
 			],
@@ -70,7 +70,7 @@ class FilterSeeder extends Seeder
 
 		foreach ($filterData as $data) {
 			$filter = Filter::create([
-				'name' => ucfirst($data['type']) . ' para ' . $task->title,
+				'name' => ucfirst($data['type']),
 				'project_id' => $project->id,
 				'type' => $data['type'],
 				'options' => $data['options'], // Laravel convierte array a JSON
