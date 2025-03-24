@@ -1,6 +1,7 @@
 import InputLabel from '@/modules/auth/components/InputLabel'
 import TextInput from '@/modules/auth/components/TextInput'
 import Modal from '@/shared/components/Modal'
+import { usePage } from '@inertiajs/react'
 
 const EditTask = ({
   errors,
@@ -13,6 +14,7 @@ const EditTask = ({
   setData,
   reset,
 }) => {
+  const { filters: projectFilters } = usePage().props
   return (
     <Modal
       isOpen={isModalOpen}
@@ -89,6 +91,136 @@ const EditTask = ({
               </option>
             ))}
           </select>
+        </div>
+
+        {/* filtros de la tarea */}
+        <div className="flex flex-col gap-4 w-full my-5">
+          <h3 className="text-xl text-white font-semibold self-start">Filtros</h3>
+
+          {data.filters.map((filter, index) => (
+            <div
+              key={filter.filter_id}
+              className="grid grid-cols-2 gap-4 items-center bg-slate-500/20 p-2 rounded-md"
+            >
+              <span className="text-white">{filter.filter_name}</span>
+
+              {/* Input dinámico según tipo */}
+              {(() => {
+                switch (filter.filter_type) {
+                  case 'texto':
+                    return (
+                      <input
+                        type="text"
+                        className="w-full bg-slate-400/30 text-white p-1 rounded"
+                        value={filter.value || ''}
+                        onChange={(e) => {
+                          const newFilters = [...data.filters]
+                          newFilters[index].value = e.target.value
+                          setData('filters', newFilters)
+                        }}
+                      />
+                    )
+
+                  case 'numero':
+                    return (
+                      <input
+                        type="number"
+                        className="w-full bg-slate-400/30 text-white p-1 rounded"
+                        value={filter.value || ''}
+                        onChange={(e) => {
+                          const newFilters = [...data.filters]
+                          newFilters[index].value = Number(e.target.value)
+                          setData('filters', newFilters)
+                        }}
+                      />
+                    )
+
+                  case 'fecha':
+                    return (
+                      <input
+                        type="date"
+                        className="w-full bg-slate-400/30 text-white p-1 rounded"
+                        value={filter.value || ''}
+                        onChange={(e) => {
+                          const newFilters = [...data.filters]
+                          newFilters[index].value = e.target.value
+                          setData('filters', newFilters)
+                        }}
+                      />
+                    )
+
+                  case 'persona':
+                    return (
+                      <select
+                        className="w-full bg-slate-400/30 text-white p-1 rounded"
+                        value={filter.value || ''}
+                        onChange={(e) => {
+                          const newFilters = [...data.filters]
+                          newFilters[index].value = e.target.value
+                          setData('filters', newFilters)
+                        }}
+                      >
+                        <option value="">Sin asignar</option>
+                        {collaborators.map((user) => (
+                          <option key={user.id} value={user.id}>
+                            {user.name} | {user.email}
+                          </option>
+                        ))}
+                      </select>
+                    )
+
+                  case 'seleccion_unica':
+                    const currentFilterSingle = projectFilters.find(
+                      (f) => f.id === filter.filter_id
+                    )
+                    return (
+                      <select
+                        className="w-full bg-slate-400/30 text-white p-1 rounded"
+                        value={filter.value || ''}
+                        onChange={(e) => {
+                          const newFilters = [...data.filters]
+                          newFilters[index].value = e.target.value
+                          setData('filters', newFilters)
+                        }}
+                      >
+                        {(currentFilterSingle?.options || []).map((option, idx) => (
+                          <option key={idx} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    )
+
+                  case 'seleccion_multiple':
+                    const currentFilterMultiple = projectFilters.find(
+                      (f) => f.id === filter.filter_id
+                    )
+                    return (
+                      <select
+                        multiple
+                        className="w-full bg-slate-400/30 text-white p-1 rounded"
+                        value={filter.value || []}
+                        onChange={(e) => {
+                          const options = Array.from(e.target.selectedOptions).map((o) => o.value)
+                          const newFilters = [...data.filters]
+                          newFilters[index].value = options
+                          setData('filters', newFilters)
+                        }}
+                      >
+                        {(currentFilterMultiple?.options || []).map((option, idx) => (
+                          <option key={idx} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    )
+
+                  default:
+                    return <span className="text-gray-300">Tipo no soportado</span>
+                }
+              })()}
+            </div>
+          ))}
         </div>
 
         {/* description  */}
