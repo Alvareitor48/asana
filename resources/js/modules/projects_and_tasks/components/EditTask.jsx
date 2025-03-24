@@ -169,7 +169,7 @@ const EditTask = ({
                       </select>
                     )
 
-                  case 'seleccion_unica':
+                  case 'unica':
                     const currentFilterSingle = projectFilters.find(
                       (f) => f.id === filter.filter_id
                     )
@@ -191,7 +191,7 @@ const EditTask = ({
                       </select>
                     )
 
-                  case 'seleccion_multiple':
+                  case 'multiple':
                     const currentFilterMultiple = projectFilters.find(
                       (f) => f.id === filter.filter_id
                     )

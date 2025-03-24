@@ -12,8 +12,8 @@ class FilterController extends Controller
 	{
 		$data = $request->validate([
 			'name' => 'required|string|max:255',
-			'type' => 'required|in:seleccion_unica,seleccion_multiple,fecha,persona,texto,numero',
-			'options' => 'required_if:type,seleccion_unica,seleccion_multiple|array|nullable',
+			'type' => 'required|in:unica,multiple,fecha,persona,texto,numero',
+			'options' => 'required_if:type,unica,multiple|array|nullable',
 		]);
 
 		$filter = Filter::create([
@@ -37,7 +37,7 @@ class FilterController extends Controller
 			'options' => 'nullable|array',
 		]);
 
-		if (in_array($filter->type, ['seleccion_unica', 'seleccion_multiple'])) {
+		if (in_array($filter->type, ['unica', 'multiple'])) {
 			if (!$request->filled('options') || !is_array($request->options) || count($request->options) === 0) {
 				return back();
 			}

@@ -1,12 +1,12 @@
 import { monthName } from './utils'
 
 export function formatFilterValue(task, collaborators) {
-  if (task.filter_type === 'seleccion_unica' && task.value)
+  if (task.filter_type === 'unica' && task.value)
     return (
       <span className="w-fit h-fit px-1 py-1 rounded-lg bg-blue-500/80 ">{task.value ?? ''}</span>
     )
 
-  if (task.filter_type === 'seleccion_multiple' && task.value) {
+  if (task.filter_type === 'multiple' && task.value) {
     return (
       <div className="flex flex-wrap gap-4">
         {task.value.map((v) => (
