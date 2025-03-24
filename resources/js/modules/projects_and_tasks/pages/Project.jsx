@@ -73,7 +73,11 @@ export default function Project({ project, sections: sec }) {
           {/* header */}
           <div className="flex items-center justify-between p-4 w-full bg-gray-900 ">
             <div className="flex items-center gap-3">
-              <div className="w-5 h-5 rounded-md" style={{ backgroundColor: project.color_icon }} />
+              <div
+                onClick={openEditProjectModal}
+                className="w-5 h-5 rounded-md cursor-pointer"
+                style={{ backgroundColor: project.color_icon }}
+              />
               <h1 className="text-xl font-bold text-white">{project.name}</h1>
 
               <button
