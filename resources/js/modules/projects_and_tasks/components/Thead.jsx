@@ -4,7 +4,9 @@ const Thead = ({ filters }) => {
       <tr className="text-left text-gray-400 border-b border-gray-700">
         <th className="px-2 py-2">Nombre</th>
         <th className="px-2 py-2">Responsable</th>
-        <th className="px-2 py-2 line-clamp-1">Fecha de entrega</th>
+        <th className="px-2 py-2 ">
+          Fecha <span className="hidden xl:inline">de entrega</span>
+        </th>
 
         {filters.map((filter) => (
           <th key={filter.id} className="px-2 py-2">
