@@ -68,7 +68,7 @@ export default function Project({ project, sections: sec }) {
       <AuthLayout>
         <div
           ref={containerRef}
-          className="w-full flex flex-col justify-start items-start  rounded-xl  container-glass gap-4 h-full"
+          className="w-full flex flex-col justify-start items-start  rounded-xl container-glass gap-4 h-full"
         >
           {/* header */}
           <div className="flex items-center justify-between p-4 w-full bg-gray-900 ">
@@ -89,7 +89,7 @@ export default function Project({ project, sections: sec }) {
           </div>
 
           {/* body */}
-          <div className="overflow-x-scroll w-full h-full p-3 bg-black/60">
+          <div className="overflow-x-scroll scrollbar-custom w-full h-full p-3 bg-black/60">
             <table className="w-full border-collapse">
               <Thead filters={filters} />
               <Tbody
