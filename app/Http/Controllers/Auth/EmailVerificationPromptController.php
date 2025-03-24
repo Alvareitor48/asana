@@ -16,7 +16,7 @@ class EmailVerificationPromptController extends Controller
 	public function __invoke(Request $request): RedirectResponse|Response
 	{
 		return $request->user()->hasVerifiedEmail()
-			? redirect()->intended(route('home', absolute: false))
+			? Inertia::location(route('home'))
 			: Inertia::render('auth/pages/VerifyEmail', ['status' => session('status')]);
 	}
 }
