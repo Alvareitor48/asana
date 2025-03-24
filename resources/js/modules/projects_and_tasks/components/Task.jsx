@@ -15,8 +15,8 @@ const Task = ({ tasks, openModal, collaborators }) => {
     e.preventDefault()
 
     // Obtener las coordenadas del clic
-    let x = e.clientX
-    let y = e.clientY
+    let x = e.clientX - 250
+    let y = e.clientY - 100
 
     // Obtener dimensiones de la ventana
     const windowWidth = window.innerWidth
