@@ -155,7 +155,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
               onClick={() => handleCreateTask(section.section.id)}
             >
               <td className="px-2 py-2 pl-10">Agegar Tarea...</td>
-              <td colSpan={4}></td>
+              <td colSpan={filters.length + 3}></td>
             </tr>
           )}
         </React.Fragment>
@@ -163,7 +163,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
 
       {/* new section */}
       <tr className="border-b border-gray-700 hover:bg-gray-800">
-        <td>
+        <td className="w-full">
           <CardNav
             name={'Añadir nueva sección'}
             className="hover:bg-gray-800 cursor-pointer"
