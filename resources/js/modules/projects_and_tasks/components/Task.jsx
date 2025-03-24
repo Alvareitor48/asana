@@ -101,6 +101,7 @@ const Task = ({ tasks, openModal, collaborators, projectId }) => {
           task={contextMenu.task}
           onClose={closeContextMenu}
           projectId={projectId}
+          openTaskModal={openModal}
         />
       )}
     </>

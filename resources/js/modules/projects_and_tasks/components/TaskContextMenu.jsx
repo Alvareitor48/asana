@@ -1,7 +1,7 @@
 import { router } from '@inertiajs/react'
 import { useEffect, useRef } from 'react'
 
-const TaskContextMenu = ({ x, y, task, onClose, projectId }) => {
+const TaskContextMenu = ({ x, y, task, onClose, projectId, openTaskModal }) => {
   const menuRef = useRef(null)
 
   useEffect(() => {
@@ -17,20 +17,7 @@ const TaskContextMenu = ({ x, y, task, onClose, projectId }) => {
     }
   }, [onClose])
 
-  const handleDuplicateTask = () => {
-    // Implementar lógica para duplicar tarea
-    console.log('Duplicar tarea:', task.id)
-    onClose()
-  }
-
-  const handleCreateFollowUp = () => {
-    // Implementar lógica para crear tarea de seguimiento
-    console.log('Crear tarea de seguimiento para:', task.id)
-    onClose()
-  }
-
   const handleMarkAsCompleted = () => {
-    // Implementar lógica para marcar como finalizada
     console.log('Marcar como finalizada:', task.id)
     onClose()
   }
@@ -41,8 +28,7 @@ const TaskContextMenu = ({ x, y, task, onClose, projectId }) => {
   }
 
   const handleOpenDetails = () => {
-    // Implementar lógica para abrir detalles
-    console.log('Abrir detalles de:', task.id)
+    openTaskModal(() => task)
     onClose()
   }
 
