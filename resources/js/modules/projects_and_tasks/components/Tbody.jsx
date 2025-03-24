@@ -1,5 +1,3 @@
-import { formatFilterValue } from '@/lib/filterDetail'
-import { monthName } from '@/lib/utils'
 import CardNav from '@/shared/components/CardNav'
 import Add from '@/shared/icons/Add'
 import ArrowDown from '@/shared/icons/ArrowDown'
@@ -8,6 +6,7 @@ import { initEcho } from '@/utils/echo'
 import { router, useForm, usePage } from '@inertiajs/react'
 import React, { useEffect, useRef, useState } from 'react'
 import EditTask from './EditTask'
+import Task from './Task'
 
 const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters }) => {
   const { collaborators, pusher } = usePage().props
@@ -145,45 +144,9 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
           </tr>
 
           {/* Filas de tareas (visibles cuando la sección no está colapsada) */}
-          {!collapsedSections[section.section.id] &&
-            section.tasks.map((task) => {
-              const firstLetter = collaborators.find((owner) => owner.id === task.assigned_to)
-
-              const dueDate = task.due_date ? new Date(task.due_date) : null
-              const dayAndMonth = dueDate
-                ? `${dueDate.getDate()} de ${monthName(dueDate.getMonth() + 1)}`
-                : ''
-
-              return (
-                <tr key={task.id} className="border-b border-gray-700 hover:bg-gray-800">
-                  <td className="px-2 py-2 pl-10 text-gray-300 flex items-center cursor-pointer">
-                    <div className="w-5 h-5 rounded-full border border-gray-400 flex items-center justify-center mr-2">
-                      {!!task.status && '✔'}
-                    </div>
-                    <span onClick={() => openModal(task)}>{task.title}</span>
-                  </td>
-                  <td className="px-2 py-2">
-                    <div className="w-8 h-8 rounded-full bg-blue-900/70 flex items-center justify-center text-white">
-                      <span>{firstLetter?.name?.charAt(0) ?? ''}</span>
-                    </div>
-                  </td>
-                  <td className="px-2 py-2 text-sm">
-                    {dayAndMonth ? (
-                      <span>{dayAndMonth}</span>
-                    ) : (
-                      <div className="w-8 h-8 border rounded-full border-white/40" />
-                    )}
-                  </td>
-                  {task?.filters?.map((filter) => (
-                    <td className="px-2 py-2">
-                      <div className="w-full flex h-full p-2  line-clamp-1   items-center justify-center text-white">
-                        {formatFilterValue(filter, collaborators)}
-                      </div>
-                    </td>
-                  ))}
-                </tr>
-              )
-            })}
+          {!collapsedSections[section.section.id] && (
+            <Task collaborators={collaborators} tasks={section.tasks} openModal={openModal} />
+          )}
 
           {/* Fila para agregar tarea (visible cuando la sección no está colapsada) */}
           {!collapsedSections[section.section.id] && (
