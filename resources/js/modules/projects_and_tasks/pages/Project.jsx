@@ -1,4 +1,4 @@
-import { EditProjectModal } from '@/shared/components/EditProjectModal'
+import { EditProjectModal } from '@/modules/projects_and_tasks/components/EditProjectModal'
 import AuthLayout from '@/shared/layouts/AuthLayout'
 import { router, useForm, usePage } from '@inertiajs/react'
 import { useRef, useState } from 'react'
@@ -46,21 +46,20 @@ export default function Project({ project, sections: sec }) {
       })
   }
 
-  const { data, setData, processing, errors, reset } = useForm({
-    name: '',
-    description: '',
-    color_icon: '#000',
+  const { data, setData, processing, errors, patch } = useForm({
+    name: project.name,
+    description: project.description,
+    color_icon: project.color_icon,
   })
 
   const handleEditProjectSubmit = (e) => {
     e.preventDefault()
 
-    /*  post(route('project.store'), {
+    patch(route('project.update', { id: project.id }), {
       onSuccess: () => {
-        reset()
-        setIsModalOpen(false)
+        closeEditProjectModal()
       },
-    }) */
+    })
   }
 
   return (
@@ -74,10 +73,8 @@ export default function Project({ project, sections: sec }) {
           <div className="flex items-center justify-between p-4 w-full bg-gray-900 ">
             <div className="flex items-center gap-3">
               <div
-
                 onClick={openEditProjectModal}
                 className="min-w-5 size-5 rounded-md cursor-pointer"
-
                 style={{ backgroundColor: project.color_icon }}
               />
               <h1 className="text-xl font-bold text-white">{project.name}</h1>
@@ -114,7 +111,6 @@ export default function Project({ project, sections: sec }) {
         isModalOpen={isEditProjectModalOpen}
         openModal={openEditProjectModal}
         closeModal={closeEditProjectModal}
-        project={project}
         handleSubmit={handleEditProjectSubmit}
         setData={setData}
         processing={processing}
