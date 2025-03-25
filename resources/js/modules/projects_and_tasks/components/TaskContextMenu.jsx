@@ -23,7 +23,9 @@ const TaskContextMenu = ({ x, y, task, onClose, projectId, openTaskModal }) => {
   }
 
   const handleDeleteTask = () => {
-    router.delete(route('tasks.destroy', { project: projectId, task: task.id }))
+    router.delete(route('tasks.destroy', { project: projectId, task: task.id }), {
+      preserveScroll: true,
+    })
     onClose()
   }
 

@@ -13,6 +13,7 @@ const EditTask = ({
   reorderedSections,
   setData,
   reset,
+  handleDeleteTask,
 }) => {
   const { filters: projectFilters } = usePage().props
   return (
@@ -236,6 +237,16 @@ const EditTask = ({
             onChange={(e) => setData('description', e.target.value)}
             aria-invalid={errors.description ? 'true' : 'false'}
           />
+        </div>
+
+        <div className="flex flex-col justify-between items-center gap-3  my-5  w-full">
+          <button
+            onClick={handleDeleteTask}
+            type="button"
+            className="mb-2 mx-2.5 w-fit bg-red-600 text-black rounded-md px-4 py-1.5 transition-transform duration-200 hover:scale-105 active:scale-95"
+          >
+            Eliminar Tarea
+          </button>
         </div>
       </div>
     </Modal>
