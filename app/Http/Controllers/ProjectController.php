@@ -60,6 +60,22 @@ class ProjectController extends Controller
 		return redirect(route('project.show', $project));
 	}
 
+	public function update(Request $request, Project $project): RedirectResponse
+	{
+		$data = $request->validate([
+			'name' => 'required|string|max:255',
+			'description' => 'nullable|string|max:255',
+			'color_icon' => [
+				'required',
+				'regex:/^#([A-Fa-f0-9]{3}){1,2}$/',
+			],
+		]);
+
+		$project->update($data);
+
+		return redirect()->route('project.show', $project);
+	}
+
 	public function destroy(Project $project): RedirectResponse
 	{
 		// Verificar si el usuario autenticado es el propietario del proyecto

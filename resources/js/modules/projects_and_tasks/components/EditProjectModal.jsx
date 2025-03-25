@@ -1,7 +1,7 @@
 import { colorOptions } from '@/lib/utils'
 import InputLabel from '@/modules/auth/components/InputLabel'
 import TextInput from '@/modules/auth/components/TextInput'
-import Modal from './Modal'
+import Modal from '../../../shared/components/Modal'
 
 export const EditProjectModal = ({
   setData,
@@ -10,7 +10,6 @@ export const EditProjectModal = ({
   isModalOpen,
   closeModal,
   handleSubmit,
-  project,
   data,
   openDeleteProject,
   is_project_owner,
@@ -93,17 +92,18 @@ export const EditProjectModal = ({
             disabled={processing}
             className="mb-2 w-fit content-end bg-white text-black rounded-md px-4 py-1 transition-transform duration-200 hover:scale-105 active:scale-95"
           >
-            {processing ? 'Creando...' : 'Actualizar'}
+            {processing ? 'Actualizando...' : 'Actualizar'}
           </button>
+          {is_project_owner && (
+            <button
+              onClick={openDeleteProject}
+              type="button"
+              className="mb-2 mx-2.5 w-fit bg-red-600 text-black rounded-md px-4 py-1.5 transition-transform duration-200 hover:scale-105 active:scale-95"
+            >
+              Eliminar Proyecto
+            </button>
+          )}
         </form>
-        {is_project_owner && (
-          <button
-            onClick={openDeleteProject}
-            className="mb-2 w-fit bg-red-600 text-black rounded-md px-4 py-1 transition-transform duration-200 hover:scale-105 active:scale-95"
-          >
-            Eliminar Proyecto
-          </button>
-        )}
       </div>
     </Modal>
   )
