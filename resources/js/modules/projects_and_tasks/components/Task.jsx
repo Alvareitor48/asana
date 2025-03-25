@@ -3,7 +3,7 @@ import { monthName } from '@/lib/utils'
 import { useState } from 'react'
 import TaskContextMenu from './TaskContextMenu'
 
-const Task = ({ tasks, openModal, collaborators }) => {
+const Task = ({ tasks, openModal, collaborators, projectId }) => {
   const [contextMenu, setContextMenu] = useState({
     visible: false,
     x: 0,
@@ -97,6 +97,8 @@ const Task = ({ tasks, openModal, collaborators }) => {
           y={contextMenu.y}
           task={contextMenu.task}
           onClose={closeContextMenu}
+          projectId={projectId}
+          openTaskModal={openModal}
         />
       )}
     </>

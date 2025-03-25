@@ -145,7 +145,12 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
 
           {/* Filas de tareas (visibles cuando la sección no está colapsada) */}
           {!collapsedSections[section.section.id] && (
-            <Task collaborators={collaborators} tasks={section.tasks} openModal={openModal} />
+            <Task
+              collaborators={collaborators}
+              tasks={section.tasks}
+              projectId={projectId}
+              openModal={openModal}
+            />
           )}
 
           {/* Fila para agregar tarea (visible cuando la sección no está colapsada) */}
