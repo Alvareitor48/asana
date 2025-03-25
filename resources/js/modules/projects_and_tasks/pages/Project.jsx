@@ -74,27 +74,29 @@ export default function Project({ project, sections: sec }) {
           <div className="flex items-center justify-between p-4 w-full bg-gray-900 ">
             <div className="flex items-center gap-3">
               <div
+
                 onClick={openEditProjectModal}
-                className="w-5 h-5 rounded-md cursor-pointer"
+                className="min-w-5 size-5 rounded-md cursor-pointer"
+
                 style={{ backgroundColor: project.color_icon }}
               />
               <h1 className="text-xl font-bold text-white">{project.name}</h1>
 
               <button
-                className='<button className="my-2 w-fit bg-blue-900/80 text-white rounded-md px-4 py-1 transition-transform duration-200 hover:scale-105 active:scale-95">'
+                className="hidden md:block my-2 w-fit bg-blue-900/80 text-white rounded-md px-4 py-1 transition-transform duration-200 hover:scale-105 active:scale-95"
                 onClick={openEditProjectModal}
               >
                 Editar
               </button>
             </div>
-            <button className="my-2 w-fit bg-white/60 text-black rounded-md px-4 py-1 transition-transform duration-200 hover:scale-105 active:scale-95">
+            <button className="hidden md:block my-2 w-fit bg-white/60 text-black rounded-md px-4 py-1 transition-transform duration-200 hover:scale-105 active:scale-95">
               Añadir Filtro
             </button>
           </div>
 
           {/* body */}
           <div className="overflow-x-scroll scrollbar-custom w-full h-full p-3 bg-black/60">
-            <table className="w-full border-collapse">
+            <table className="overflow-x-scroll scrollbar-custom w-full border-collapse">
               <Thead filters={filters} />
               <Tbody
                 filters={filters}
