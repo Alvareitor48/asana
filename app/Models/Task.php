@@ -21,6 +21,10 @@ class Task extends Model
 		'section_id',
 	];
 
+	protected $casts = [
+		'status' => 'boolean',
+	];
+
 
 	protected function casts(): array
 	{

@@ -7,8 +7,8 @@ import { initEcho } from '@/utils/echo'
 import { router, useForm, usePage } from '@inertiajs/react'
 import React, { useEffect, useRef, useState } from 'react'
 import EditTask from './EditTask'
-import Task from './Task'
 import SectionContextMenu from './SectionContextMenu'
+import Task from './Task'
 
 const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters }) => {
   const { collaborators, pusher } = usePage().props
@@ -36,6 +36,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
 
     setData({
       title: selectedTask.title || '',
+      status: selectedTask.status || false,
       assigned_to: selectedTask.assigned_to ?? '',
       due_date: selectedTask.due_date || '',
       section_id: selectedTask.section_id || '',
@@ -46,6 +47,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
 
   const { data, setData, patch, processing, errors, reset } = useForm({
     title: '',
+    status: false,
     assigned_to: '',
     due_date: '',
     section_id: '',
@@ -58,6 +60,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
 
     const original = {
       title: selectedTask.title || '',
+      status: selectedTask.status || false,
       assigned_to: selectedTask.assigned_to ?? '',
       due_date: selectedTask.due_date || '',
       section_id: selectedTask.section_id || '',
@@ -144,6 +147,44 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
     setIsModalOpen(false)
   }
 
+  const updateTaskInSection = (updatedTask) => {
+    setSections((prevSections) =>
+      prevSections.map((section) => {
+        if (!section.tasks.some((t) => t.id === updatedTask.id)) return section
+
+        return {
+          ...section,
+          tasks: section.tasks.map((t) => (t.id === updatedTask.id ? { ...t, ...updatedTask } : t)),
+        }
+      })
+    )
+  }
+
+  const handleData = (task, key, value) => {
+    let dataToSend = {
+      title: task.title || '',
+      status: task.status || false,
+      assigned_to: task.assigned_to ?? '',
+      due_date: task.due_date || '',
+      section_id: task.section_id || '',
+      description: task.description || '',
+      filters: task.filters || [],
+    }
+
+    dataToSend[key] = value
+
+    router.patch(
+      route('tasks.update', {
+        project: projectId,
+        task: task.id, // <- Ojo: aquí usas task.id, no selectedTask.id
+      }),
+      {
+        ...dataToSend,
+        preserveScroll: true,
+      }
+    )
+  }
+
   return (
     <tbody ref={containerRef}>
       {updatedSections.map((section) => (
@@ -172,6 +213,8 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
               tasks={section.tasks}
               projectId={projectId}
               openModal={openModal}
+              handleData={handleData}
+              updateTaskInSection={updateTaskInSection}
             />
           )}
 

@@ -22,6 +22,7 @@ class ProjectShowResource extends JsonResource
 			'tasks' => $this->tasks->map(fn($task) => [
 				'id' => $task->id,
 				'title' => $task->title,
+				'status' => $task->status,
 				'description' => $task->description,
 				'status' => $task->status,
 				'due_date' => optional($task->due_date)->format('Y-m-d'),
