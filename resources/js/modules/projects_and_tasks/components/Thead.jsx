@@ -3,7 +3,6 @@ import Add from '@/shared/icons/Add'
 import FilterContextMenu from './FilterContextMenu'
 
 const Thead = ({ filters, projectId }) => {
-  console.log(filters)
   const [closeContextMenu, handleContextMenu, contextMenu] = useContextMenu()
 
   return (
