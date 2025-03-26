@@ -20,7 +20,6 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
     setSelectedTask(task)
     setIsModalOpen(true)
   }
-  const closeModal = () => setIsModalOpen(false)
 
   const handleCreateTask = (sectionId) => {
     sectionId && router.post(route('tasks.store', { project: projectId, section: sectionId }))
@@ -106,6 +105,18 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
         )
       })
 
+      echo.channel('tasks').listen('.task.deleted', (event) => {
+        setSections((prevSections) =>
+          prevSections.map((section) => {
+            if (section.section.id !== event.sectionId) return section
+
+            const updatedTasks = section.tasks.filter((task) => task.id !== event.taskId)
+
+            return { ...section, tasks: updatedTasks }
+          })
+        )
+      })
+
       echo.channel('sections').listen('.section.updated', (event) => {
         setSections((prevSections) =>
           prevSections.some((s) => s.section.id === event.section.id)
@@ -122,6 +133,13 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
       }
     }
   }, [pusher])
+
+  const handleDeleteTask = () => {
+    router.delete(route('tasks.destroy', { project: projectId, task: selectedTask?.id }), {
+      preserveScroll: true,
+    })
+    setIsModalOpen(false)
+  }
 
   return (
     <tbody ref={containerRef}>
@@ -189,6 +207,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
         collaborators={collaborators}
         setData={setData}
         reset={reset}
+        handleDeleteTask={handleDeleteTask}
       />
     </tbody>
   )

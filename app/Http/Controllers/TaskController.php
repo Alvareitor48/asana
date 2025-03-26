@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TaskDeleted;
 use App\Events\TaskUpdated;
 use App\Http\Resources\IndexProjectsResource;
 use App\Http\Resources\ResponsibleResource;
@@ -101,7 +102,14 @@ class TaskController extends Controller
 
 	public function destroy(Project $project, Task $task)
 	{
-		// Soft delete de una tarea
+		$taskId = $task->id;
+		$sectionId = $task->section_id;
+
+		$task->delete();
+
+		broadcast(new TaskDeleted($taskId, $sectionId));
+
+		return back();
 	}
 
 	public function restore(Project $project, Task $task)
