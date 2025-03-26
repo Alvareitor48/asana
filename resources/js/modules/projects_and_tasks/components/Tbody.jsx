@@ -1,3 +1,4 @@
+import useContextMenu from '@/hooks/useContextMenu'
 import CardNav from '@/shared/components/CardNav'
 import Add from '@/shared/icons/Add'
 import ArrowDown from '@/shared/icons/ArrowDown'
@@ -7,6 +8,7 @@ import { router, useForm, usePage } from '@inertiajs/react'
 import React, { useEffect, useRef, useState } from 'react'
 import EditTask from './EditTask'
 import Task from './Task'
+import SectionContextMenu from './SectionContextMenu'
 
 const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters }) => {
   const { collaborators, pusher } = usePage().props
@@ -15,6 +17,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
   const [selectedTask, setSelectedTask] = useState(null)
   const [updatedSections, setSections] = useState(sections)
   const timeoutRef = useRef(null)
+  const [closeContextMenu, handleContextMenu, contextMenu] = useContextMenu()
 
   const openModal = (task) => {
     setSelectedTask(task)
@@ -149,6 +152,7 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
           <tr
             className="bg-gray-800 border-b border-gray-700 cursor-pointer hover:bg-gray-700"
             onClick={() => toggleSection(section.section.id)}
+            onContextMenu={(e) => handleContextMenu(e, section.section.id)}
           >
             <td className="px-2 py-2 font-semibold flex items-center text-white">
               {collapsedSections[section.section.id] ? (
@@ -209,6 +213,15 @@ const Tbody = ({ sections, collapsedSections, toggleSection, projectId, filters 
         reset={reset}
         handleDeleteTask={handleDeleteTask}
       />
+      {contextMenu.visible && (
+        <SectionContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          sectionId={contextMenu.element}
+          onClose={closeContextMenu}
+          projectId={projectId}
+        />
+      )}
     </tbody>
   )
 }

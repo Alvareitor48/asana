@@ -94,7 +94,7 @@ export default function Project({ project, sections: sec }) {
           {/* body */}
           <div className="overflow-x-scroll scrollbar-custom w-full h-full p-3 bg-black/60">
             <table className="overflow-x-scroll scrollbar-custom w-full border-collapse">
-              <Thead filters={filters} />
+              <Thead filters={filters} projectId={project.id} />
               <Tbody
                 filters={filters}
                 sections={sec}
