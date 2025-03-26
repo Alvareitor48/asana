@@ -1,10 +1,22 @@
 import useContextMenu from '@/hooks/useContextMenu'
 import { formatFilterValue } from '@/lib/filterDetail'
 import { monthName } from '@/lib/utils'
+import { useState } from 'react'
 import TaskContextMenu from './TaskContextMenu'
 
 const Task = ({ tasks, openModal, collaborators, projectId, handleData, updateTaskInSection }) => {
+  const [editingTitleId, setEditingTitleId] = useState(null)
+  const [titleInput, setTitleInput] = useState('')
   const [closeContextMenu, handleContextMenu, contextMenu] = useContextMenu()
+
+  const handleTitleBlur = (task) => {
+    if (titleInput !== task.title) {
+      const updatedTask = { ...task, title: titleInput }
+      handleData(updatedTask, 'title', titleInput)
+      updateTaskInSection(updatedTask)
+    }
+    setEditingTitleId(null)
+  }
 
   return (
     <>
@@ -15,6 +27,7 @@ const Task = ({ tasks, openModal, collaborators, projectId, handleData, updateTa
         const dayAndMonth = dueDate
           ? `${dueDate.getDate()} de ${monthName(dueDate.getMonth() + 1)}`
           : ''
+        const isEditingTitle = editingTitleId === task.id
 
         return (
           <tr
@@ -34,9 +47,26 @@ const Task = ({ tasks, openModal, collaborators, projectId, handleData, updateTa
                 >
                   {task.status === true && '✔'}
                 </button>
-                <span className="border border-transparent hover:border-gray-300 px-1 rounded">
-                  {task.title}
-                </span>
+                {isEditingTitle ? (
+                  <input
+                    type="text"
+                    value={titleInput}
+                    onChange={(e) => setTitleInput(e.target.value)}
+                    onBlur={() => handleTitleBlur(task)}
+                    autoFocus
+                    className="bg-transparent border border-transparent focus:border-gray-300 rounded px-1 py-0.5 text-white outline-none w-full min-w-0"
+                  />
+                ) : (
+                  <span
+                    className="inline-flex border border-transparent hover:border-gray-300 rounded px-1 py-0.5 cursor-pointer w-full min-w-0"
+                    onClick={() => {
+                      setEditingTitleId(task.id)
+                      setTitleInput(task.title)
+                    }}
+                  >
+                    {task.title}
+                  </span>
+                )}
               </div>
               <div
                 className="w-7 h-7 text-xl bg-transparent flex items-center justify-center hover:bg-gray-200/15 cursor-pointer border-gray-700 border"
