@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FilterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SectionController;
@@ -39,6 +40,8 @@ Route::middleware('auth')->group(function () {
 		->name('tasks.projects');
 	Route::delete('/projects/{project}/tasks/{task}', [TaskController::class, 'destroy'])
 		->name('tasks.destroy');
+	Route::delete('/projects/{project}/filters/{filter}', [FilterController::class, 'destroy'])
+		->name('filter.destroy');
 	Route::get('/projects/{project}/tasks/{task}/restore', [TaskController::class, 'restore'])
 		->name('tasks.restore');
 	Route::delete('/projects/{project}/tasks/{task}/force', [TaskController::class, 'forceDelete'])

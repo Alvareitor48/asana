@@ -48,8 +48,10 @@ class FilterController extends Controller
 		return back();
 	}
 
-	public function destroy(Filter $filter)
+	public function destroy(Project $project, $filter)
 	{
+		$filter = Filter::findOrFail($filter);
+
 		$filter->delete();
 
 		return back();
