@@ -1,5 +1,6 @@
 import InputLabel from '@/modules/auth/components/InputLabel'
 import TextInput from '@/modules/auth/components/TextInput'
+import { useEffect, useState } from 'react'
 import Modal from './Modal'
 
 export const FilterModal = ({
@@ -11,6 +12,14 @@ export const FilterModal = ({
   handleSubmit,
   setData,
 }) => {
+  const [optionInput, setOptionInput] = useState('')
+  useEffect(() => {
+    if (['unica', 'multiple'].includes(data.type)) {
+      setData('options', data.options ?? [])
+    } else {
+      setData('options', null)
+    }
+  }, [data.type])
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
       <div className="text-white flex flex-col justify-start items-start w-full">
@@ -58,6 +67,55 @@ export const FilterModal = ({
             </select>
           </div>
           {errors.description && <p className="text-red-500 text-center mb-3">{errors.type}</p>}
+          {['unica', 'multiple'].includes(data.type) && (
+            <div className="my-4 w-full">
+              <InputLabel className="text-white mb-1" value="Opciones" />
+
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={optionInput}
+                  onChange={(e) => setOptionInput(e.target.value)}
+                  placeholder="Añadir opción"
+                  className="bg-slate-400/30 text-white p-1 rounded w-full"
+                />
+                <button
+                  type="button"
+                  className="bg-white text-black rounded px-2 py-1"
+                  onClick={() => {
+                    if (optionInput.trim()) {
+                      setData('options', [...(data.options || []), optionInput.trim()])
+                      setOptionInput('')
+                    }
+                  }}
+                >
+                  Añadir
+                </button>
+              </div>
+
+              {data.options?.length > 0 && (
+                <ul className="mt-2 text-sm text-white list-disc pl-5">
+                  {data.options.map((opt, idx) => (
+                    <li key={idx} className="flex justify-between items-center">
+                      <span>{opt}</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setData(
+                            'options',
+                            data.options.filter((_, i) => i !== idx)
+                          )
+                        }}
+                        className="ml-2 text-red-500 hover:text-red-700 text-xs"
+                      >
+                        Eliminar
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
 
           <button
             disabled={processing}

@@ -24,6 +24,8 @@ const Thead = ({ filters, projectId }) => {
     console.log(data)
 
     post(route('filter.store', { project: projectId }), {
+      preserveScroll: true,
+      preserveState: false,
       onSuccess: () => {
         reset()
         setIsModalOpen(false)
