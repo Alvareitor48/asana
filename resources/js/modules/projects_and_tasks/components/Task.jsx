@@ -102,6 +102,8 @@ const Task = ({ tasks, openModal, collaborators, projectId, handleData, updateTa
           onClose={closeContextMenu}
           projectId={projectId}
           openTaskModal={openModal}
+          handleData={handleData}
+          updateTaskInSection={updateTaskInSection}
         />
       )}
     </>

@@ -1,7 +1,16 @@
 import { router } from '@inertiajs/react'
 import { useEffect, useRef } from 'react'
 
-const TaskContextMenu = ({ x, y, task, onClose, projectId, openTaskModal }) => {
+const TaskContextMenu = ({
+  x,
+  y,
+  task,
+  onClose,
+  projectId,
+  openTaskModal,
+  handleData,
+  updateTaskInSection,
+}) => {
   const menuRef = useRef(null)
 
   useEffect(() => {
@@ -19,6 +28,11 @@ const TaskContextMenu = ({ x, y, task, onClose, projectId, openTaskModal }) => {
 
   const handleMarkAsCompleted = () => {
     console.log('Marcar como finalizada:', task.id)
+
+    const updatedTask = { ...task, status: !task.status }
+    handleData(updatedTask, 'status', updatedTask.status)
+    updateTaskInSection(updatedTask)
+
     onClose()
   }
 
