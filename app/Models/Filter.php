@@ -13,8 +13,10 @@ class Filter extends Model
 	use HasFactory;
 
 	protected $fillable = [
+		'name',
 		'type',
 		'options',
+		'project_id',
 	];
 	protected $casts = [
 		'options' => 'array',

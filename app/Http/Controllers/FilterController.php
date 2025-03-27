@@ -27,7 +27,7 @@ class FilterController extends Controller
 			$task->filters()->attach($filter->id, ['value' => null]);
 		});
 
-		return back();
+		return redirect()->route('project.show', $project);
 	}
 
 	public function update(Request $request, Filter $filter)
@@ -54,6 +54,6 @@ class FilterController extends Controller
 
 		$filter->delete();
 
-		return back();
+		return redirect()->route('project.show', $project);
 	}
 }

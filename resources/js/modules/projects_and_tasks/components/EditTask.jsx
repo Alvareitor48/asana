@@ -196,24 +196,55 @@ const EditTask = ({
                     const currentFilterMultiple = projectFilters.find(
                       (f) => f.id === filter.filter_id
                     )
+                    const selectedValues = filter.value || []
+
                     return (
-                      <select
-                        multiple
-                        className="w-full bg-slate-400/30 text-white p-1 rounded"
-                        value={filter.value || []}
-                        onChange={(e) => {
-                          const options = Array.from(e.target.selectedOptions).map((o) => o.value)
-                          const newFilters = [...data.filters]
-                          newFilters[index].value = options
-                          setData('filters', newFilters)
-                        }}
-                      >
-                        {(currentFilterMultiple?.options || []).map((option, idx) => (
-                          <option key={idx} value={option}>
-                            {option}
+                      <div className="w-full">
+                        {/* Select para añadir opciones */}
+                        <select
+                          className="w-full bg-slate-400/30 text-white p-1 rounded"
+                          value=""
+                          onChange={(e) => {
+                            const newValue = e.target.value
+                            if (!selectedValues.includes(newValue)) {
+                              const newFilters = [...data.filters]
+                              newFilters[index].value = [...selectedValues, newValue]
+                              setData('filters', newFilters)
+                            }
+                          }}
+                        >
+                          <option value="" disabled>
+                            Selecciona opción...
                           </option>
-                        ))}
-                      </select>
+                          {(currentFilterMultiple?.options || []).map((option, idx) => (
+                            <option key={idx} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
+                        {/* Opciones seleccionadas tipo tags */}
+                        <div className="flex flex-wrap gap-1 mt-3">
+                          {selectedValues.map((val, i) => (
+                            <span
+                              key={i}
+                              className="bg-blue-700 text-white text-sm px-2 py-1 rounded-full flex items-center gap-1"
+                            >
+                              {val}
+                              <button
+                                className="text-xs text-white hover:text-red-300"
+                                onClick={() => {
+                                  const newValues = selectedValues.filter((v) => v !== val)
+                                  const newFilters = [...data.filters]
+                                  newFilters[index].value = newValues
+                                  setData('filters', newFilters)
+                                }}
+                              >
+                                ✕
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     )
 
                   default:
