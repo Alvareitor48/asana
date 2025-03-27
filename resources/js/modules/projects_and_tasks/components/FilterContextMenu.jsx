@@ -20,6 +20,7 @@ const FilterContextMenu = ({ x, y, onClose, projectId, filterId }) => {
   const handleDeleteTask = () => {
     router.delete(route('filter.destroy', { project: projectId, filter: filterId }), {
       preserveScroll: true,
+      preserveState: false,
     })
     onClose()
   }

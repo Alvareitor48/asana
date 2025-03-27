@@ -54,6 +54,6 @@ class FilterController extends Controller
 
 		$filter->delete();
 
-		return back();
+		return redirect()->route('project.show', $project);
 	}
 }
