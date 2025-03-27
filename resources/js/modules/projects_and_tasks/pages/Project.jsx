@@ -86,9 +86,6 @@ export default function Project({ project, sections: sec }) {
                 Editar
               </button>
             </div>
-            <button className="hidden md:block my-2 w-fit bg-white/60 text-black rounded-md px-4 py-1 transition-transform duration-200 hover:scale-105 active:scale-95">
-              Añadir Filtro
-            </button>
           </div>
 
           {/* body */}

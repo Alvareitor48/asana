@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\SectionUpdated;
 use App\Models\Project;
 use App\Models\Section;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class SectionController extends Controller
@@ -25,5 +26,17 @@ class SectionController extends Controller
 	public function update(Request $request, Project $project, Section $section)
 	{
 		// Actualizar una sección
+	}
+
+	public function destroy(Project $project, Section $section)
+	{
+		// Verifica que la sección pertenece al proyecto
+		if ($section->project_id !== $project->id) {
+			abort(404, 'La sección no pertenece al proyecto.');
+		}
+
+		$section->delete();
+
+		return back()->with('message', 'Sección eliminada correctamente.');
 	}
 }

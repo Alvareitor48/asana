@@ -88,7 +88,7 @@ const Task = ({ tasks, openModal, collaborators, projectId, handleData, updateTa
               )}
             </td>
             {task?.filters?.map((filter) => (
-              <td className="px-2 py-2  h-full">{formatFilterValue(filter, collaborators)}</td>
+              <td className="px-2 py-2 text-center h-full">{formatFilterValue(filter, collaborators)}</td>
             ))}
             <td colSpan={1}></td>
           </tr>
