@@ -16,6 +16,9 @@ Route::middleware('auth')->group(function () {
 			'canRegister' => Route::has('register'),
 		]);
 	})->name('home');
+	Route::get('/simular-fallo', function () {
+		abort(500, 'Error intencional para prueba de monitoreo');
+	});
 	Route::get('/projects', [ProjectController::class, 'index'])
 		->name('tasks.index');
 	Route::get('/projects/{project}', [ProjectController::class, 'show'])
