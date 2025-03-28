@@ -49,6 +49,8 @@ Route::middleware('auth')->group(function () {
 		->name('filter.destroy');
 	Route::post('/projects/{project}/filters', [FilterController::class, 'store'])
 		->name('filter.store');
+	Route::patch('/projects/{project}/filters/{filter}', [FilterController::class, 'update'])
+		->name('filter.update');
 	Route::get('/projects/{project}/tasks/{task}/restore', [TaskController::class, 'restore'])
 		->name('tasks.restore');
 	Route::delete('/projects/{project}/tasks/{task}/force', [TaskController::class, 'forceDelete'])
