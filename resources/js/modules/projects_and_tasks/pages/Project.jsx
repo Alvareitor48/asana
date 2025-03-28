@@ -2,12 +2,13 @@ import { EditProjectModal } from '@/modules/projects_and_tasks/components/EditPr
 import AuthLayout from '@/shared/layouts/AuthLayout'
 import { router, useForm, usePage } from '@inertiajs/react'
 import { useRef, useState } from 'react'
+import { CollaboratorsModal } from '../components/CollaboratorsModal'
 import { DeleteProjectModal } from '../components/DeleteProjectModal'
 import Tbody from '../components/Tbody'
 import Thead from '../components/Thead'
 
 export default function Project({ project, sections: sec }) {
-  const { is_project_owner, filters } = usePage().props
+  const { is_project_owner, filters, collaborators } = usePage().props
   const [collapsedSections, setCollapsedSections] = useState(() => {
     const initialState = []
 
@@ -20,12 +21,17 @@ export default function Project({ project, sections: sec }) {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isEditProjectModalOpen, setIsEditProjectModalOpen] = useState(false)
+  const [isCollaboratorsModalOpen, setIsCollaboratorsModalOpen] = useState(false)
+
   const containerRef = useRef(null)
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
 
   const openEditProjectModal = () => setIsEditProjectModalOpen(true)
   const closeEditProjectModal = () => setIsEditProjectModalOpen(false)
+
+  const openCollaboratorsModal = () => setIsCollaboratorsModalOpen(true)
+  const closeCollaboratorsModal = () => setIsCollaboratorsModalOpen(false)
 
   const toggleSection = (sectionId) => {
     setCollapsedSections({
@@ -70,7 +76,7 @@ export default function Project({ project, sections: sec }) {
           className="w-full flex flex-col justify-start items-start  rounded-xl container-glass gap-4 h-full"
         >
           {/* header */}
-          <div className="flex items-center justify-between p-4 w-full bg-gray-900 ">
+          <div className="flex flex-wrap items-start justify-between p-4 w-full bg-gray-900 ">
             <div className="flex items-center gap-3">
               <div
                 onClick={openEditProjectModal}
@@ -86,6 +92,12 @@ export default function Project({ project, sections: sec }) {
                 Editar
               </button>
             </div>
+            <button
+              className=" md:block my-2 w-fit self-end bg-gray-500/80 text-white rounded-md px-4 py-1 transition-transform duration-200 hover:scale-105 active:scale-95"
+              onClick={openCollaboratorsModal}
+            >
+              Colaboradores
+            </button>
           </div>
 
           {/* body */}
@@ -115,6 +127,16 @@ export default function Project({ project, sections: sec }) {
         errors={errors}
         openDeleteProject={openModal}
         is_project_owner={is_project_owner}
+      />
+
+      <CollaboratorsModal
+        isModalOpen={isCollaboratorsModalOpen}
+        openModal={openCollaboratorsModal}
+        closeModal={closeCollaboratorsModal}
+        openCollaboratorsProject={openModal}
+        is_project_owner={is_project_owner}
+        collaborators={collaborators}
+        projectId={project.id}
       />
 
       {is_project_owner && (
