@@ -1,5 +1,6 @@
 import useContextMenu from '@/hooks/useContextMenu'
 import { FilterModal } from '@/shared/components/FilterModal'
+import { UpdateFilterModal } from '@/shared/components/UpdateFilterModal'
 import Add from '@/shared/icons/Add'
 import { useForm } from '@inertiajs/react'
 import { useRef, useState } from 'react'
@@ -8,10 +9,15 @@ import FilterContextMenu from './FilterContextMenu'
 const Thead = ({ filters, projectId }) => {
   const [closeContextMenu, handleContextMenu, contextMenu] = useContextMenu()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isUpdateFilterModal, setUpdateFilterModal] = useState(false)
+
   const containerRef = useRef(null)
 
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
+
+  const openUpdateFilterModal = () => setUpdateFilterModal(true)
+  const closeUpdateFilterModal = () => setUpdateFilterModal(false)
 
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
@@ -32,8 +38,6 @@ const Thead = ({ filters, projectId }) => {
       },
     })
   }
-
-  /*  console.log(filters) */
 
   return (
     <thead>
@@ -62,8 +66,19 @@ const Thead = ({ filters, projectId }) => {
           filterId={contextMenu.element}
           onClose={closeContextMenu}
           projectId={projectId}
+          openModal={openUpdateFilterModal}
         />
       )}
+
+      <UpdateFilterModal
+        handleSubmit={handleSubmit}
+        setData={setData}
+        processing={processing}
+        closeModal={closeUpdateFilterModal}
+        isModalOpen={isUpdateFilterModal}
+        data={data}
+        errors={errors}
+      />
       <FilterModal
         handleSubmit={handleSubmit}
         setData={setData}
