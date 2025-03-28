@@ -13,7 +13,7 @@ import Add from '../icons/Add'
 import ArrowDown from '../icons/ArrowDown'
 
 export default function AuthLayout({ children }) {
-  const { projects: initialProjects, pusher } = usePage().props
+  const { projects: initialProjects, pusher, my_tasks } = usePage().props
   const [projects, setProjects] = useState(initialProjects)
   const user = usePage().props.auth.user
 
