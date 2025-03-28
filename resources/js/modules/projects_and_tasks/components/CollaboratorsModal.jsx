@@ -94,7 +94,7 @@ export const CollaboratorsModal = ({
               <div className="mt-2 bg-slate-800 border border-gray-600 rounded-md">
                 {results.map((user) => (
                   <div
-                    key={user.id}
+                    key={`${user.id}-${user.name}`}
                     className="flex justify-between items-center p-2 hover:bg-slate-700 cursor-pointer"
                     onClick={() => handleAddCollaborator(user.id)}
                   >
@@ -115,7 +115,7 @@ export const CollaboratorsModal = ({
             {collaborators.map((collaborator) => {
               return (
                 <div
-                  key={collaborator.id}
+                  key={`${collaborator.id}-${collaborator.name}`}
                   className="flex w-full  space-y-5 justify-start items-center gap-10"
                 >
                   <Avatar
