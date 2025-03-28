@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
 		->name('section.update');
 	Route::delete('/projects/{project}/sections/{section}', [SectionController::class, 'destroy'])
 		->name('section.destroy');
-	Route::post('/projects/{project}/search-users', [UserController::class, 'search'])->name('users.search');
+	Route::get('/projects/{project}/search-users', [UserController::class, 'search'])->name('users.search');
 	Route::post('/projects/{project}/collaborators', [CollaboratorController::class, 'store'])->name('project.collaborators.add');
 	Route::delete('/projects/{project}/collaborators/{user}', [CollaboratorController::class, 'destroy'])->name('project.collaborators.remove');
 	Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

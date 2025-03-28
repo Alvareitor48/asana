@@ -1,6 +1,7 @@
 import Avatar from '@/shared/components/Avatar'
-import { router, usePage } from '@inertiajs/react'
-import { useEffect, useRef, useState } from 'react'
+import { router } from '@inertiajs/react'
+import axios from 'axios'
+import { useRef, useState } from 'react'
 import Modal from '../../../shared/components/Modal'
 import { CollaboratorDropdown } from './CollaboratorDropdown'
 
@@ -17,33 +18,26 @@ export const CollaboratorsModal = ({
   collaborators,
   projectId,
 }) => {
-  const { props } = usePage()
-  const sessionResults = props.searchResults || []
   const [search, setSearch] = useState('')
   const [results, setResults] = useState([])
   const timeoutRef = useRef(null)
 
-  useEffect(() => {
-    if (sessionResults.length > 0) {
-      setResults(sessionResults)
-    }
-  }, [sessionResults])
-
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     const query = e.target.value
     setSearch(query)
 
     clearTimeout(timeoutRef.current)
 
     if (query.length > 1) {
-      timeoutRef.current = setTimeout(() => {
-        router.post(
-          route('users.search', { project: projectId }),
-          { search: query },
-          {
-            preserveScroll: true,
-          }
-        )
+      timeoutRef.current = setTimeout(async () => {
+        try {
+          const res = await axios.get(route('users.search', { project: projectId }), {
+            params: { search: query },
+          })
+          setResults(res.data.users)
+        } catch (err) {
+          console.error('Error buscando usuarios:', err)
+        }
       }, 300)
     } else {
       setResults([])

@@ -23,8 +23,8 @@ class UserController extends Controller
 			->limit(10)
 			->get(['id', 'name', 'email']);
 
-		session()->flash('collaborator_search_results', $users);
-
-		return redirect()->route('project.show', $project);
+		return response()->json([
+			'users' => $users,
+		]);
 	}
 }
