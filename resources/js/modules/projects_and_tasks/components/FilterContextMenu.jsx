@@ -1,9 +1,8 @@
 import { router } from '@inertiajs/react'
 import { useEffect, useRef } from 'react'
 
-const FilterContextMenu = ({ x, y, onClose, projectId, filterId, openModal }) => {
+const FilterContextMenu = ({ x, y, onClose, projectId, filter, openModal }) => {
   const menuRef = useRef(null)
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -18,7 +17,7 @@ const FilterContextMenu = ({ x, y, onClose, projectId, filterId, openModal }) =>
   }, [onClose])
 
   const handleDeleteTask = () => {
-    router.delete(route('filter.destroy', { project: projectId, filter: filterId }), {
+    router.delete(route('filter.destroy', { project: projectId, filter: filter.id }), {
       preserveScroll: true,
       preserveState: false,
     })
@@ -26,7 +25,7 @@ const FilterContextMenu = ({ x, y, onClose, projectId, filterId, openModal }) =>
   }
 
   const handleEditFilter = () => {
-    openModal(() => filterId)
+    openModal()
     onClose()
   }
 

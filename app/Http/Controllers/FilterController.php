@@ -30,22 +30,29 @@ class FilterController extends Controller
 		return redirect()->route('project.show', $project);
 	}
 
-	public function update(Request $request, Filter $filter)
+	public function update(Request $request, Project $project, Filter $filter)
 	{
 		$data = $request->validate([
-			'name' => 'sometimes|required|string|max:255',
+			'name' => 'required|string|max:255',
+			'type' => 'required|in:unica,multiple,fecha,persona,texto,numero',
 			'options' => 'nullable|array',
 		]);
 
-		if (in_array($filter->type, ['unica', 'multiple'])) {
-			if (!$request->filled('options') || !is_array($request->options) || count($request->options) === 0) {
-				return back();
-			}
+		if (in_array($data['type'], ['unica', 'multiple']) && empty($data['options'])) {
+			return back()->withErrors(['options' => 'Debe proporcionar al menos una opción.']);
 		}
 
-		$filter->update($data);
+		$filter->update([
+			'name' => $data['name'],
+			'type' => $data['type'],
+			'options' => $data['options'],
+		]);
 
-		return back();
+		foreach ($filter->tasks as $task) {
+			$filter->tasks()->updateExistingPivot($task->id, ['value' => null]);
+		}
+
+		return redirect()->route('project.show', $project);
 	}
 
 	public function destroy(Project $project, $filter)

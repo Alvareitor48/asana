@@ -1,18 +1,17 @@
 import InputLabel from '@/modules/auth/components/InputLabel'
 import TextInput from '@/modules/auth/components/TextInput'
+import { useForm } from '@inertiajs/react'
 import { useEffect, useState } from 'react'
 import Modal from './Modal'
 
-export const UpdateFilterModal = ({
-  isModalOpen,
-  processing,
-  data,
-  errors,
-  closeModal,
-  handleSubmit,
-  setData,
-}) => {
+export const UpdateFilterModal = ({ isModalOpen, closeModal, filter, projectId }) => {
   const [optionInput, setOptionInput] = useState('')
+
+  const { data, setData, patch, processing, errors, reset } = useForm({
+    name: filter?.name || '',
+    type: filter?.type || 'unica',
+    options: filter?.options || [],
+  })
   useEffect(() => {
     if (['unica', 'multiple'].includes(data.type)) {
       setData('options', data.options ?? [])
@@ -20,12 +19,33 @@ export const UpdateFilterModal = ({
       setData('options', null)
     }
   }, [data.type])
+  useEffect(() => {
+    if (filter) {
+      setData({
+        name: filter.name || '',
+        type: filter.type || 'unica',
+        options: filter.options || [],
+      })
+    }
+  }, [filter])
+  const handleUpdateFilter = (e) => {
+    e.preventDefault()
+
+    patch(route('filter.update', { project: projectId, filter: filter.id }), {
+      preserveScroll: true,
+      preserveState: false,
+      onSuccess: () => {
+        closeModal()
+        reset()
+      },
+    })
+  }
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
       <div className="text-white flex flex-col justify-start items-start w-full">
         <h2 className="self-center text-3xl">Editar Filtro</h2>
         {/* nombre de la tarea */}
-        <form onSubmit={handleSubmit} className="w-full h-fit">
+        <form onSubmit={handleUpdateFilter} className="w-full h-fit">
           <div className="flex justify-between items-center gap-10 my-5 w-full">
             <InputLabel className="text-white w-[100px]" htmlFor="name" value="Nombre del Filtro" />
             <TextInput
@@ -121,7 +141,7 @@ export const UpdateFilterModal = ({
             disabled={processing}
             className="mb-2 w-full bg-white text-black rounded-md px-4 py-1 transition-transform duration-200 hover:scale-105 active:scale-95"
           >
-            {processing ? 'Creando...' : 'Crear'}
+            {processing ? 'Actualizando...' : 'Actualizar'}
           </button>
         </form>
       </div>
