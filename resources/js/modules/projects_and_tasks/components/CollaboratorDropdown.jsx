@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 
-export function CollaboratorDropdown({ collaboratorId, closeModal }) {
+export function CollaboratorDropdown({ collaboratorId, closeModal, handleRemove }) {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef(null)
 
   const toggleDropdown = () => {
-    console.log('dentro')
-
     setIsOpen(!isOpen)
   }
 
@@ -23,14 +21,6 @@ export function CollaboratorDropdown({ collaboratorId, closeModal }) {
     }
   }, [])
 
-  const handleDeleteTask = () => {
-    /* router.delete(
-      route('collaborator.destroy', { project: projectId, collaborator: collaboratorId })
-    ) */
-
-    closeModal()
-  }
-
   return (
     <div className="relative" ref={dropdownRef}>
       <button
@@ -43,7 +33,9 @@ export function CollaboratorDropdown({ collaboratorId, closeModal }) {
         <div className="absolute right-0 mt-2 w-48 bg-slate-600/70  rounded-md shadow-lg z-20 ">
           <div className="py-2">
             <button
-              onClick={handleDeleteTask}
+              onClick={() => {
+                handleRemove()
+              }}
               className="block px-4 py-2 hover:bg-gray-200/20 text-red-500 w-full text-start"
             >
               Eliminar

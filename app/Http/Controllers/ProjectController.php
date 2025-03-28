@@ -25,9 +25,11 @@ class ProjectController extends Controller
 
 	public function show(Project $project)
 	{
+		$usersFromSearch = session('collaborator_search_results');
 		return Inertia::render('projects_and_tasks/pages/Project', [
 			'sections' => ProjectShowResource::collection($project->sections()->with('tasks.filters')->get())->toArray(request()),
 			'project' => (new IndexProjectsResource($project))->toArray(request()),
+			'searchResults' => $usersFromSearch,
 		]);
 	}
 
