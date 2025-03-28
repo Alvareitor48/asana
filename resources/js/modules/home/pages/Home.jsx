@@ -11,6 +11,13 @@ export default function Home({ auth }) {
   const [projects, setProjects] = useState(initialProjects)
   const user = usePage().props.auth.user
   const { pusher } = usePage().props
+  const [now] = useState(
+    new Date().toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  )
 
   useEffect(() => {
     if (pusher) {
@@ -32,7 +39,7 @@ export default function Home({ auth }) {
           {/*  saludo */}
           <div className="md:col-span-2 w-full h-full flex justify-center items-center flex-col gap-4">
             <h1 className="text-6xl font-kalam text-center">Buenos días {user.name} 🫡</h1>
-            <h3 className="text-3xl">Lunes 21 de Marzo del 2028</h3>
+            <h3 className="text-3xl">{now}</h3>
           </div>
 
           {/* mis tareas */}
