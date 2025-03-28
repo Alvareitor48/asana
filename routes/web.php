@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\CollaboratorController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -59,6 +61,9 @@ Route::middleware('auth')->group(function () {
 		->name('section.update');
 	Route::delete('/projects/{project}/sections/{section}', [SectionController::class, 'destroy'])
 		->name('section.destroy');
+	Route::get('/projects/{project}/search-users', [UserController::class, 'search'])->name('users.search');
+	Route::post('/projects/{project}/collaborators', [CollaboratorController::class, 'store'])->name('project.collaborators.add');
+	Route::delete('/projects/{project}/collaborators/{user}', [CollaboratorController::class, 'destroy'])->name('project.collaborators.remove');
 	Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 	Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 	Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
